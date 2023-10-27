@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+	<class>MainWindow</class>
+	<widget class="QMainWindow" name="MainWindow">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>1019</width>
+				<height>662</height>
+			</rect>
+		</property>
+		<property name="windowTitle">
+			<string>MainWindow</string>
+		</property>
+		<widget class="QWidget" name="centralwidget">
+			<layout class="QGridLayout" name="gridLayout_4">
+				<item row="0" column="0" rowspan="2">
+					<widget class="QGroupBox" name="groupBox_4">
+						<property name="minimumSize">
+							<size>
+								<width>800</width>
+								<height>600</height>
+							</size>
+						</property>
+						<property name="font">
+							<font>
+								<weight>75</weight>
+								<italic>false</italic>
+								<bold>true</bold>
+							</font>
+						</property>
+						<property name="title">
+							<string>Visualization</string>
+						</property>
+						<layout class="QGridLayout" name="gridLayout_2">
+							<item row="0" column="0">
+								<layout class="QVBoxLayout" name="vlRobotModel" />
+							</item>
+						</layout>
+					</widget>
+				</item>
+				<item row="0" column="1">
+					<widget class="QGroupBox" name="groupBox">
+						<property name="font">
+							<font>
+								<weight>75</weight>
+								<bold>true</bold>
+							</font>
+						</property>
+						<property name="title">
+							<string>Simulation</string>
+						</property>
+						<layout class="QGridLayout" name="gridLayout">
+							<item row="0" column="0">
+								<widget class="QPushButton" name="btnLoad">
+									<property name="sizePolicy">
+										<sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+											<horstretch>0</horstretch>
+											<verstretch>0</verstretch>
+										</sizepolicy>
+									</property>
+									<property name="text">
+										<string>Load</string>
+									</property>
+								</widget>
+							</item>
+							<item row="2" column="0">
+								<widget class="QPushButton" name="btnRun">
+									<property name="enabled">
+										<bool>false</bool>
+									</property>
+									<property name="sizePolicy">
+										<sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+											<horstretch>0</horstretch>
+											<verstretch>0</verstretch>
+										</sizepolicy>
+									</property>
+									<property name="text">
+										<string>Run</string>
+									</property>
+								</widget>
+							</item>
+							<item row="1" column="0">
+								<widget class="QPushButton" name="btnModel">
+									<property name="enabled">
+										<bool>false</bool>
+									</property>
+									<property name="sizePolicy">
+										<sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+											<horstretch>0</horstretch>
+											<verstretch>0</verstretch>
+										</sizepolicy>
+									</property>
+									<property name="text">
+										<string>Model</string>
+									</property>
+								</widget>
+							</item>
+						</layout>
+					</widget>
+				</item>
+				<item row="1" column="1">
+					<widget class="QGroupBox" name="gbSimInfor">
+						<property name="enabled">
+							<bool>false</bool>
+						</property>
+						<property name="font">
+							<font>
+								<weight>75</weight>
+								<bold>true</bold>
+							</font>
+						</property>
+						<property name="title">
+							<string>Sim Infor</string>
+						</property>
+						<layout class="QGridLayout" name="gridLayout_3">
+							<item row="0" column="1">
+								<layout class="QVBoxLayout" name="verticalLayout_2">
+									<item>
+										<widget class="QLabel" name="txtEndTime">
+											<property name="text">
+												<string>0</string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="txtIntegStepSize">
+											<property name="text">
+												<string>0</string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="txtSaveStepSize">
+											<property name="text">
+												<string>0</string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="txtGravity">
+											<property name="text">
+												<string>0</string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="txtGravityAxis">
+											<property name="text">
+												<string>0</string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="txtSolver">
+											<property name="text">
+												<string>0</string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="txtAnalysisMethod">
+											<property name="text">
+												<string>0</string>
+											</property>
+										</widget>
+									</item>
+								</layout>
+							</item>
+							<item row="0" column="0">
+								<layout class="QVBoxLayout" name="verticalLayout">
+									<item>
+										<widget class="QLabel" name="label">
+											<property name="text">
+												<string>End time(sec) : </string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="label_2">
+											<property name="text">
+												<string>Integ Step Size(sec) : </string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="label_3">
+											<property name="text">
+												<string>Save Step Size(sec) : </string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="label_4">
+											<property name="text">
+												<string>Gravity(m/s^2) : </string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="label_5">
+											<property name="text">
+												<string>Gravity Axis : </string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="label_6">
+											<property name="text">
+												<string>Solver : </string>
+											</property>
+										</widget>
+									</item>
+									<item>
+										<widget class="QLabel" name="label_7">
+											<property name="text">
+												<string>Analysis Method : </string>
+											</property>
+										</widget>
+									</item>
+								</layout>
+							</item>
+						</layout>
+					</widget>
+				</item>
+			</layout>
+		</widget>
+		<widget class="QMenuBar" name="menubar">
+			<property name="geometry">
+				<rect>
+					<x>0</x>
+					<y>0</y>
+					<width>1019</width>
+					<height>22</height>
+				</rect>
+			</property>
+		</widget>
+		<widget class="QStatusBar" name="statusbar" />
+	</widget>
+	<resources />
+	<connections />
+</ui>

@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="crabster_simulator" type="crabster_simulator" name="crabster_simulator_node" output="screen" />
+</launch>
