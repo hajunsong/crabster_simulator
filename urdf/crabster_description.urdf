@@ -1,1 +1,41 @@
 <?xml version="1.0"?>
+<robot
+	xmlns:xacro="http://wiki.ros.org/xacro" name="crabster">
+
+	<link name="world"></link>
+	<link name="BaseBody">
+		<inertial>
+			<origin
+				xyz="-0.354345 0.000365387 -0.0545106"
+				rpy="0 0 0"/>
+			<mass
+				value="100.041"/>
+			<inertia
+				ixx="37.1546"
+				ixy="-7.37731e-16"
+				ixz="0"
+				iyy="52.5461"
+				iyz="1.51556e-17"
+				izz="87.2393"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/BaseBody.STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/BaseBody.STL"/>
+			</geometry>
+		</collision>
+	</link>	<joint name="world_to_BaseBody" type="fixed">
+		<origin xyz="0 0 0 " rpy="0 0 0" />
+		<parent link="world" />
+		<child link="BaseBody" />
+	</joint>
+</robot>

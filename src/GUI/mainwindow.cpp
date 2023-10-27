@@ -50,7 +50,8 @@ MainWindow::~MainWindow()
 void MainWindow::btnLoadClicked()
 {
 	 // json file direction
-    std::string json_dir = "/mnt/c/Users/hj/Desktop/KRISO/ros_ws/src/crabster_simulator/data/input_data/";
+    // std::string json_dir = "/mnt/c/Users/hj/Desktop/KRISO/ros_ws/src/crabster_simulator/data/input_data/";
+    std::string json_dir = "/home/keti/Project/KRISO/CRABSTER/ros_ws/src/crabster_simulator/data/input_data/";
 
 	// read simulation parameters
 	SimulationData SimData = m_inputs->readSimulationParameter(json_dir, m_dynamics);
@@ -83,20 +84,61 @@ void MainWindow::btnLoadClicked()
 	std::string urdf = "";
 	urdf += "<?xml version=\"1.0\"?>";
 	urdf += "\n";
+	
 	urdf += "<robot\n";
 	urdf += "\txmlns:xacro=\"http://wiki.ros.org/xacro\" name=\"crabster\">\n";
 	urdf += "\n";
+
 	urdf += "\t<link name=\"world\"></link>\n";
 
 	urdf += "\t<link name=\"" + buf_BaseBody.name + "\">\n";
-	urdf += "\t<visual>\n";
-	urdf += "\t\torigin xyz=\"0 0 0"; 
+
+	urdf += "\t\t<inertial>\n";
+	urdf += "\t\t\t<origin\n";
+	urdf += "\t\t\t\txyz=\""
+		+ QString::number(buf_BaseBody.rho0p(0)).toStdString() + " "
+		+ QString::number(buf_BaseBody.rho0p(1)).toStdString() + " "
+		+ QString::number(buf_BaseBody.rho0p(2)).toStdString() + "\"\n";
+	urdf += "\t\t\t\trpy=\"0 0 0\"/>\n";
+	urdf += "\t\t\t<mass\n";
+	urdf += "\t\t\t\tvalue=\"" + QString::number(buf_BaseBody.m0).toStdString() + "\"/>\n";
+	urdf += "\t\t\t<inertia\n";
+	urdf += "\t\t\t\tixx=\"" + QString::number(buf_BaseBody.J0cp(0,0)).toStdString() + "\"\n";
+	urdf += "\t\t\t\tixy=\"" + QString::number(buf_BaseBody.J0cp(0,1)).toStdString() + "\"\n";
+	urdf += "\t\t\t\tixz=\"" + QString::number(buf_BaseBody.J0cp(0,2)).toStdString() + "\"\n";
+	urdf += "\t\t\t\tiyy=\"" + QString::number(buf_BaseBody.J0cp(1,1)).toStdString() + "\"\n";
+	urdf += "\t\t\t\tiyz=\"" + QString::number(buf_BaseBody.J0cp(1,2)).toStdString() + "\"\n";
+	urdf += "\t\t\t\tizz=\"" + QString::number(buf_BaseBody.J0cp(2,2)).toStdString() + "\"/>\n";
+	urdf += "\t\t</inertial>\n";
+
+	urdf += "\t\t<visual>\n";
+	urdf += "\t\t\t<origin xyz=\"0 0 0\" rpy=\"0 0 0\"/>\n";
+	urdf += "\t\t\t<geometry>\n";
+	urdf += "\t\t\t\t<mesh filename=\"package://crabster_simulator/meshes/" + buf_BaseBody.name + ".STL\"/>\n";
+	urdf += "\t\t\t</geometry>\n";
+	urdf += "\t\t\t<material name=\"\">\n";
+	urdf += "\t\t\t\t<color rgba=\"0.792156862745098 0.819607843137255 0.933333333333333 1\"/>\n";
+	urdf += "\t\t\t</material>\n";
+	urdf += "\t\t</visual>\n"; 
+
+	urdf += "\t\t<collision>\n";
+	urdf += "\t\t\t<origin xyz=\"0 0 0\" rpy=\"0 0 0\"/>\n";
+	urdf += "\t\t\t<geometry>\n";
+	urdf += "\t\t\t\t<mesh filename=\"package://crabster_simulator/meshes/" + buf_BaseBody.name + ".STL\"/>\n";
+	urdf += "\t\t\t</geometry>\n";
+	urdf += "\t\t</collision>\n";
+
+	urdf += "\t</link>";
 	
-	urdf += "\t<joint name=\"BaseBody_Joint\" type=\"fixed\">\n";
-	urdf += "\t\t<origin xyz=\"0 0 0\" rpy=\"0 0 0\" />\n";
+	urdf += "\t<joint name=\"world_to_" + buf_BaseBody.name + "\" type=\"fixed\">\n";
+	urdf += "\t\t<origin xyz=\"" 
+		+ QString::number(buf_BaseBody.r0(0)).toStdString() + " " 
+		+ QString::number(buf_BaseBody.r0(1)).toStdString() + " "
+		+ QString::number(buf_BaseBody.r0(1)).toStdString() + " "
+		+ "\" rpy=\"0 0 0\" />\n";
 	urdf += "\t\t<parent link=\"world\" />\n";
-	urdf += "\t\t<parent link=\"BaseBody_Joint\" />\n";
-	urdf += "\t</joint>";
+	urdf += "\t\t<child link=\"" + buf_BaseBody.name + "\" />\n";
+	urdf += "\t</joint>\n";
 
 	urdf += "</robot>";
 

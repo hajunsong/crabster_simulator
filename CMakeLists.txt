@@ -8,10 +8,10 @@ add_compile_options(-std=c++11)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-    roscpp
-    rospy
-    std_msgs
-    rviz
+	roscpp
+	rospy
+	std_msgs
+	rviz
 )
 
 ###################################
@@ -38,7 +38,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-    ${catkin_INCLUDE_DIRS}
+	${catkin_INCLUDE_DIRS}
 )
 
 ####################
@@ -66,9 +66,9 @@ QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
 QT5_WRAP_CPP(QT_MOC_HPP ${QT_MOC})
 
 include_directories(
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Gui_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
+	${Qt5Core_INCLUDE_DIRS}
+	${Qt5Gui_INCLUDE_DIRS}
+	${Qt5Widgets_INCLUDE_DIRS}
 )
 
 find_package(Eigen3 REQUIRED)
@@ -78,9 +78,9 @@ file(GLOB HEADERS src/DYNAMICS/*.h)
 
 include_directories(
 	${Eigen3_INCLUDE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/GUI
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/DYNAMICS
+	${CMAKE_CURRENT_SOURCE_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}/src/GUI
+	${CMAKE_CURRENT_SOURCE_DIR}/src/DYNAMICS
 )
 
 ##############
