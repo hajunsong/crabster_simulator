@@ -147,6 +147,8 @@ BaseBodyData Inputs::jsonRead_BaseBody(std::string json_dir)
 	buf.ReadOK = ok;
 	if (ok)
 	{
+		buf.name = data["name"].asString();
+
 		// check contact & motion
 		buf.flag_contact = data["flag contact"].asBool();
 		buf.flag_motion = data["flag motion"].asBool();
@@ -187,8 +189,6 @@ BaseBodyData Inputs::jsonRead_BaseBody(std::string json_dir)
 				buf.C00(i, j) = data["C00"][i][j].asDouble();
 			}
 		}
-
-		buf.name = data["name"].asString();
 	}
 	else
 	{
@@ -212,6 +212,9 @@ SubsystemData Inputs::jsonRead_Subsystem(std::string json_dir, int id_subsystem,
 	buf.ReadOK = ok;
 	if (ok)
 	{
+		// subsystem name
+		buf.name = data["name"].asString();
+
 		// subsystem id
 		buf.subsystem_id = data["subsystem id"].asInt();
 

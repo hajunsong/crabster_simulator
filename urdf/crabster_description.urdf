@@ -6,17 +6,17 @@
 	<link name="BaseBody">
 		<inertial>
 			<origin
-				xyz="-0.354345 0.000365387 -0.0545106"
-				rpy="0 0 0"/>
+				xyz="-0.354345 0.000365 -0.054511"
+				rpy="0.000644 0.000062 1.570881"/>
 			<mass
-				value="100.041"/>
+				value="100.040817"/>
 			<inertia
-				ixx="37.1546"
-				ixy="-7.37731e-16"
-				ixz="0"
-				iyy="52.5461"
-				iyz="1.51556e-17"
-				izz="87.2393"/>
+				ixx="37.154571"
+				ixy="-0.000000"
+				ixz="0.000000"
+				iyy="52.546078"
+				iyz="0.000000"
+				izz="87.239257"/>
 		</inertial>
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
@@ -24,7 +24,7 @@
 				<mesh filename="package://crabster_simulator/meshes/BaseBody.STL"/>
 			</geometry>
 			<material name="">
-				<color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1"/>
+				<color rgba="0.8 0.8 0.8 1"/>
 			</material>
 		</visual>
 		<collision>
@@ -33,9 +33,1068 @@
 				<mesh filename="package://crabster_simulator/meshes/BaseBody.STL"/>
 			</geometry>
 		</collision>
-	</link>	<joint name="world_to_BaseBody" type="fixed">
-		<origin xyz="0 0 0 " rpy="0 0 0" />
-		<parent link="world" />
-		<child link="BaseBody" />
+	</link>
+	<joint name="world_to_BaseBody" type="fixed">
+		<origin
+			xyz="0.000000 0.000000 0.000000"
+			rpy="0.000000 -0.000000 0.000000"/>
+		<parent link="world"/>
+		<child link="BaseBody"/>
+	</joint>
+	<link name="Subsystem11(FR_Yaw_Motor)">
+		<inertial>
+			<origin
+				xyz="-0.000025 -0.004826 0.005438"
+				rpy="0.000017 0.000646 1.597550"/>
+			<mass
+				value="10.281919"/>
+			<inertia
+				ixx="0.025810"
+				ixy="0.000000"
+				ixz="-0.000000"
+				iyy="0.025875"
+				iyz="0.000000"
+				izz="0.031298"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem11(FR_Yaw_Motor).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.8 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem11(FR_Yaw_Motor).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="BaseBody_to_Subsystem11(FR_Yaw_Motor)" type="revolute">
+		<origin
+			xyz="0.416200 -0.760100 -0.005500"
+			rpy="0.000000 -0.000000 -0.785398"/>
+		<parent link="BaseBody"/>
+		<child link="Subsystem11(FR_Yaw_Motor)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem12(FR_Roll_Arm)">
+		<inertial>
+			<origin
+				xyz="0.216360 -0.000124 -0.001763"
+				rpy="-1.570230 0.015923 -3.141552"/>
+			<mass
+				value="10.085826"/>
+			<inertia
+				ixx="0.052195"
+				ixy="0.000000"
+				ixz="-0.000000"
+				iyy="0.166548"
+				iyz="0.000000"
+				izz="0.185913"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem12(FR_Roll_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.8 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem12(FR_Roll_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem11(FR_Yaw_Motor)_to_Subsystem12(FR_Roll_Arm)" type="revolute">
+		<origin
+			xyz="0.000000 0.000000 0.000000"
+			rpy="-1.570804 -1.047193 0.000009"/>
+		<parent link="Subsystem11(FR_Yaw_Motor)"/>
+		<child link="Subsystem12(FR_Roll_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem13(FR_Pitch_Arm)">
+		<inertial>
+			<origin
+				xyz="-0.000199 0.003130 0.181480"
+				rpy="1.527506 -1.549390 -1.518990"/>
+			<mass
+				value="10.017580"/>
+			<inertia
+				ixx="0.058985"
+				ixy="-0.000000"
+				ixz="-0.000000"
+				iyy="0.127085"
+				iyz="0.000000"
+				izz="0.134936"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem13(FR_Pitch_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.8 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem13(FR_Pitch_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem12(FR_Roll_Arm)_to_Subsystem13(FR_Pitch_Arm)" type="revolute">
+		<origin
+			xyz="0.394588 -0.000121 -0.000617"
+			rpy="-2.356194 -1.570791 -0.785394"/>
+		<parent link="Subsystem12(FR_Roll_Arm)"/>
+		<child link="Subsystem13(FR_Pitch_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem14(FR_Leg)">
+		<inertial>
+			<origin
+				xyz="0.276408 0.382057 -0.007738"
+				rpy="-1.556785 -0.045628 1.077894"/>
+			<mass
+				value="20.079610"/>
+			<inertia
+				ixx="0.132719"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.950656"
+				iyz="0.000000"
+				izz="1.015634"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem14(FR_Leg).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem14(FR_Leg).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem13(FR_Pitch_Arm)_to_Subsystem14(FR_Leg)" type="revolute">
+		<origin
+			xyz="-0.000090 0.000026 0.263276"
+			rpy="-1.570800 -0.000003 -1.570793"/>
+		<parent link="Subsystem13(FR_Pitch_Arm)"/>
+		<child link="Subsystem14(FR_Leg)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem21(MR_Yaw_Motor)">
+		<inertial>
+			<origin
+				xyz="-0.000019 -0.004751 0.005430"
+				rpy="-3.141460 -1.543093 -1.570929"/>
+			<mass
+				value="10.297182"/>
+			<inertia
+				ixx="0.025879"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.025944"
+				iyz="0.000000"
+				izz="0.031343"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem21(MR_Yaw_Motor).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.8 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem21(MR_Yaw_Motor).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="BaseBody_to_Subsystem21(MR_Yaw_Motor)" type="revolute">
+		<origin
+			xyz="-0.343900 -0.817000 -0.005500"
+			rpy="0.000000 -0.000000 -1.570800"/>
+		<parent link="BaseBody"/>
+		<child link="Subsystem21(MR_Yaw_Motor)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem22(MR_Roll_Arm)">
+		<inertial>
+			<origin
+				xyz="0.217032 -0.000121 -0.000788"
+				rpy="-1.570800 0.011003 -3.141562"/>
+			<mass
+				value="10.022381"/>
+			<inertia
+				ixx="0.051051"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.168881"
+				iyz="0.000000"
+				izz="0.186995"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem22(MR_Roll_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.8 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem22(MR_Roll_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem21(MR_Yaw_Motor)_to_Subsystem22(MR_Roll_Arm)" type="revolute">
+		<origin
+			xyz="0.000000 0.000000 0.000000"
+			rpy="-1.570804 -1.047193 0.000004"/>
+		<parent link="Subsystem21(MR_Yaw_Motor)"/>
+		<child link="Subsystem22(MR_Roll_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem23(MR_Pitch_Arm)">
+		<inertial>
+			<origin
+				xyz="-0.000134 0.003083 0.181469"
+				rpy="1.621831 1.548571 1.630772"/>
+			<mass
+				value="10.018527"/>
+			<inertia
+				ixx="0.058979"
+				ixy="0.000000"
+				ixz="-0.000000"
+				iyy="0.127120"
+				iyz="-0.000000"
+				izz="0.134949"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem23(MR_Pitch_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.8 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem23(MR_Pitch_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem22(MR_Roll_Arm)_to_Subsystem23(MR_Pitch_Arm)" type="revolute">
+		<origin
+			xyz="0.394589 -0.000118 -0.000497"
+			rpy="-2.356194 -1.570791 -0.785394"/>
+		<parent link="Subsystem22(MR_Roll_Arm)"/>
+		<child link="Subsystem23(MR_Pitch_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem24(MR_Leg)">
+		<inertial>
+			<origin
+				xyz="0.276869 0.381100 -0.012619"
+				rpy="-1.587808 0.029798 -2.066940"/>
+			<mass
+				value="20.080756"/>
+			<inertia
+				ixx="0.135168"
+				ixy="-0.000000"
+				ixz="0.000000"
+				iyy="0.931520"
+				iyz="0.000000"
+				izz="0.998541"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem24(MR_Leg).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem24(MR_Leg).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem23(MR_Pitch_Arm)_to_Subsystem24(MR_Leg)" type="revolute">
+		<origin
+			xyz="-0.000003 -0.000018 0.263185"
+			rpy="-1.570800 -0.000003 -1.570793"/>
+		<parent link="Subsystem23(MR_Pitch_Arm)"/>
+		<child link="Subsystem24(MR_Leg)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem31(RR_Yaw_Motor)">
+		<inertial>
+			<origin
+				xyz="-0.000014 -0.004760 0.005430"
+				rpy="-0.000133 -1.543090 -1.570686"/>
+			<mass
+				value="10.297183"/>
+			<inertia
+				ixx="0.025879"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.025944"
+				iyz="0.000000"
+				izz="0.031343"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem31(RR_Yaw_Motor).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.8 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem31(RR_Yaw_Motor).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="BaseBody_to_Subsystem31(RR_Yaw_Motor)" type="revolute">
+		<origin
+			xyz="-1.102100 -0.748200 -0.005500"
+			rpy="0.000000 -0.000000 -1.745330"/>
+		<parent link="BaseBody"/>
+		<child link="Subsystem31(RR_Yaw_Motor)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem32(RR_Roll_Arm)">
+		<inertial>
+			<origin
+				xyz="0.217342 -0.000116 -0.001058"
+				rpy="-1.570780 0.014633 -3.141562"/>
+			<mass
+				value="10.002542"/>
+			<inertia
+				ixx="0.050701"
+				ixy="-0.000000"
+				ixz="0.000000"
+				iyy="0.168306"
+				iyz="0.000000"
+				izz="0.186120"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem32(RR_Roll_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.8 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem32(RR_Roll_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem31(RR_Yaw_Motor)_to_Subsystem32(RR_Roll_Arm)" type="revolute">
+		<origin
+			xyz="0.000000 0.000000 0.000000"
+			rpy="-1.570804 -1.047193 0.000004"/>
+		<parent link="Subsystem31(RR_Yaw_Motor)"/>
+		<child link="Subsystem32(RR_Roll_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem33(RR_Pitch_Arm)">
+		<inertial>
+			<origin
+				xyz="-0.015934 0.001556 0.180794"
+				rpy="0.308521 1.480663 0.341804"/>
+			<mass
+				value="10.018360"/>
+			<inertia
+				ixx="0.058982"
+				ixy="-0.000000"
+				ixz="-0.000000"
+				iyy="0.127126"
+				iyz="0.000000"
+				izz="0.134959"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem33(RR_Pitch_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.8 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem33(RR_Pitch_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem32(RR_Roll_Arm)_to_Subsystem33(RR_Pitch_Arm)" type="revolute">
+		<origin
+			xyz="0.394592 -0.000114 -0.000510"
+			rpy="0.257951 -1.480877 2.876035"/>
+		<parent link="Subsystem32(RR_Roll_Arm)"/>
+		<child link="Subsystem33(RR_Pitch_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem34(RR_Leg)">
+		<inertial>
+			<origin
+				xyz="0.275951 0.381784 -0.009989"
+				rpy="-1.586181 0.038348 -2.061123"/>
+			<mass
+				value="20.076146"/>
+			<inertia
+				ixx="0.135488"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.932842"
+				iyz="0.000000"
+				izz="0.999247"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem34(RR_Leg).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem34(RR_Leg).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem33(RR_Pitch_Arm)_to_Subsystem34(RR_Leg)" type="revolute">
+		<origin
+			xyz="-0.022817 -0.002213 0.262262"
+			rpy="-1.483858 0.006578 -1.547219"/>
+		<parent link="Subsystem33(RR_Pitch_Arm)"/>
+		<child link="Subsystem34(RR_Leg)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem41(FL_Yaw_Motor)">
+		<inertial>
+			<origin
+				xyz="-0.000019 0.005340 0.005552"
+				rpy="-0.163411 -1.557067 1.734883"/>
+			<mass
+				value="10.293062"/>
+			<inertia
+				ixx="0.025362"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.025418"
+				iyz="-0.000000"
+				izz="0.031384"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem41(FL_Yaw_Motor).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.8 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem41(FL_Yaw_Motor).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="BaseBody_to_Subsystem41(FL_Yaw_Motor)" type="revolute">
+		<origin
+			xyz="0.415800 0.760500 -0.005500"
+			rpy="0.000000 -0.000000 0.785398"/>
+		<parent link="BaseBody"/>
+		<child link="Subsystem41(FL_Yaw_Motor)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem42(FL_Roll_Arm)">
+		<inertial>
+			<origin
+				xyz="0.216179 -0.000121 0.006365"
+				rpy="1.570208 -0.089580 -3.141517"/>
+			<mass
+				value="10.035839"/>
+			<inertia
+				ixx="0.050344"
+				ixy="0.000000"
+				ixz="-0.000000"
+				iyy="0.169804"
+				iyz="-0.000000"
+				izz="0.187514"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem42(FL_Roll_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.8 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem42(FL_Roll_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem41(FL_Yaw_Motor)_to_Subsystem42(FL_Roll_Arm)" type="revolute">
+		<origin
+			xyz="0.000000 0.000000 0.000000"
+			rpy="-1.570804 -1.047193 0.000004"/>
+		<parent link="Subsystem41(FL_Yaw_Motor)"/>
+		<child link="Subsystem42(FL_Roll_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem43(FL_Pitch_Arm)">
+		<inertial>
+			<origin
+				xyz="-0.000004 0.003202 0.178836"
+				rpy="1.578956 -1.547059 -1.576808"/>
+			<mass
+				value="10.041873"/>
+			<inertia
+				ixx="0.059072"
+				ixy="0.000000"
+				ixz="-0.000000"
+				iyy="0.127303"
+				iyz="-0.000000"
+				izz="0.135132"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem43(FL_Pitch_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.8 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem43(FL_Pitch_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem42(FL_Roll_Arm)_to_Subsystem43(FL_Pitch_Arm)" type="revolute">
+		<origin
+			xyz="0.394591 -0.000116 0.000057"
+			rpy="-2.356194 -1.570791 -0.785394"/>
+		<parent link="Subsystem42(FL_Roll_Arm)"/>
+		<child link="Subsystem43(FL_Pitch_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem44(FL_Leg)">
+		<inertial>
+			<origin
+				xyz="0.278336 0.384882 0.008398"
+				rpy="-1.551276 -0.037865 -2.066612"/>
+			<mass
+				value="20.000655"/>
+			<inertia
+				ixx="0.131191"
+				ixy="0.000000"
+				ixz="-0.000000"
+				iyy="0.959954"
+				iyz="0.000000"
+				izz="1.024569"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem44(FL_Leg).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem44(FL_Leg).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem43(FL_Pitch_Arm)_to_Subsystem44(FL_Leg)" type="revolute">
+		<origin
+			xyz="0.000031 0.000031 0.260960"
+			rpy="-1.570800 -0.000003 -1.570793"/>
+		<parent link="Subsystem43(FL_Pitch_Arm)"/>
+		<child link="Subsystem44(FL_Leg)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem51(ML_Yaw_Motor)">
+		<inertial>
+			<origin
+				xyz="-0.000010 0.004754 0.005430"
+				rpy="-3.141460 -1.543113 1.570666"/>
+			<mass
+				value="10.297596"/>
+			<inertia
+				ixx="0.025881"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.025946"
+				iyz="0.000000"
+				izz="0.031343"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem51(ML_Yaw_Motor).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.8 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem51(ML_Yaw_Motor).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="BaseBody_to_Subsystem51(ML_Yaw_Motor)" type="revolute">
+		<origin
+			xyz="-0.343900 0.817000 -0.005500"
+			rpy="0.000000 -0.000000 1.570800"/>
+		<parent link="BaseBody"/>
+		<child link="Subsystem51(ML_Yaw_Motor)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem52(ML_Roll_Arm)">
+		<inertial>
+			<origin
+				xyz="0.231000 -0.000113 0.007114"
+				rpy="1.570790 -0.148957 -3.141559"/>
+			<mass
+				value="10.027569"/>
+			<inertia
+				ixx="0.045029"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.149452"
+				iyz="0.000000"
+				izz="0.160978"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem52(ML_Roll_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.8 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem52(ML_Roll_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem51(ML_Yaw_Motor)_to_Subsystem52(ML_Roll_Arm)" type="revolute">
+		<origin
+			xyz="0.000000 0.000000 0.000000"
+			rpy="-1.570796 -1.047193 -0.000000"/>
+		<parent link="Subsystem51(ML_Yaw_Motor)"/>
+		<child link="Subsystem52(ML_Roll_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem53(ML_Pitch_Arm)">
+		<inertial>
+			<origin
+				xyz="0.000023 -0.000020 0.122713"
+				rpy="-1.667696 1.569828 1.474273"/>
+			<mass
+				value="10.063326"/>
+			<inertia
+				ixx="0.025847"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.061469"
+				iyz="0.000000"
+				izz="0.061623"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem53(ML_Pitch_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.8 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem53(ML_Pitch_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem52(ML_Roll_Arm)_to_Subsystem53(ML_Pitch_Arm)" type="revolute">
+		<origin
+			xyz="0.394594 -0.000111 0.000497"
+			rpy="0.785398 -1.570796 2.356194"/>
+		<parent link="Subsystem52(ML_Roll_Arm)"/>
+		<child link="Subsystem53(ML_Pitch_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem54(ML_Leg)">
+		<inertial>
+			<origin
+				xyz="0.276829 0.381056 0.012302"
+				rpy="1.555582 0.032540 1.074795"/>
+			<mass
+				value="20.065685"/>
+			<inertia
+				ixx="0.134993"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.931335"
+				iyz="0.000000"
+				izz="0.998133"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem54(ML_Leg).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem54(ML_Leg).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem53(ML_Pitch_Arm)_to_Subsystem54(ML_Leg)" type="revolute">
+		<origin
+			xyz="0.000003 -0.000010 0.263181"
+			rpy="-1.570796 -0.000000 -1.570796"/>
+		<parent link="Subsystem53(ML_Pitch_Arm)"/>
+		<child link="Subsystem54(ML_Leg)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem61(RL_Yaw_Motor)">
+		<inertial>
+			<origin
+				xyz="-0.000005 0.004759 0.005430"
+				rpy="-3.141460 -1.543093 1.570686"/>
+			<mass
+				value="10.297183"/>
+			<inertia
+				ixx="0.025879"
+				ixy="-0.000000"
+				ixz="0.000000"
+				iyy="0.025944"
+				iyz="-0.000000"
+				izz="0.031343"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem61(RL_Yaw_Motor).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.8 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem61(RL_Yaw_Motor).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="BaseBody_to_Subsystem61(RL_Yaw_Motor)" type="revolute">
+		<origin
+			xyz="-1.102100 0.748200 -0.005500"
+			rpy="0.000000 -0.000000 1.745330"/>
+		<parent link="BaseBody"/>
+		<child link="Subsystem61(RL_Yaw_Motor)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem62(RL_Roll_Arm)">
+		<inertial>
+			<origin
+				xyz="0.217346 -0.000109 0.001056"
+				rpy="1.570780 -0.014637 -3.141560"/>
+			<mass
+				value="10.002542"/>
+			<inertia
+				ixx="0.050701"
+				ixy="-0.000000"
+				ixz="0.000000"
+				iyy="0.168306"
+				iyz="-0.000000"
+				izz="0.186120"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem62(RL_Roll_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.8 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem62(RL_Roll_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem61(RL_Yaw_Motor)_to_Subsystem62(RL_Roll_Arm)" type="revolute">
+		<origin
+			xyz="0.000000 0.000000 0.000000"
+			rpy="-1.570804 -1.047193 0.000004"/>
+		<parent link="Subsystem61(RL_Yaw_Motor)"/>
+		<child link="Subsystem62(RL_Roll_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem63(RL_Pitch_Arm)">
+		<inertial>
+			<origin
+				xyz="0.015755 0.001622 0.180482"
+				rpy="-0.344738 1.479048 2.774078"/>
+			<mass
+				value="10.042014"/>
+			<inertia
+				ixx="0.059074"
+				ixy="-0.000000"
+				ixz="0.000000"
+				iyy="0.127318"
+				iyz="0.000000"
+				izz="0.135133"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem63(RL_Pitch_Arm).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.8 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem63(RL_Pitch_Arm).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem62(RL_Roll_Arm)_to_Subsystem63(RL_Pitch_Arm)" type="revolute">
+		<origin
+			xyz="0.394596 -0.000106 0.000509"
+			rpy="-2.883555 -1.480878 -0.265645"/>
+		<parent link="Subsystem62(RL_Roll_Arm)"/>
+		<child link="Subsystem63(RL_Pitch_Arm)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
+	</joint>
+	<link name="Subsystem64(RL_Leg)">
+		<inertial>
+			<origin
+				xyz="0.277373 0.385141 0.010089"
+				rpy="1.552839 0.035081 1.081710"/>
+			<mass
+				value="20.006482"/>
+			<inertia
+				ixx="0.134418"
+				ixy="0.000000"
+				ixz="0.000000"
+				iyy="0.944028"
+				iyz="0.000000"
+				izz="1.009798"/>
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem64(RL_Leg).STL"/>
+			</geometry>
+			<material name="">
+				<color rgba="0.1 0.1 0.1 1"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://crabster_simulator/meshes/Subsystem64(RL_Leg).STL"/>
+			</geometry>
+		</collision>
+	</link>
+	<joint name="Subsystem63(RL_Pitch_Arm)_to_Subsystem64(RL_Leg)" type="revolute">
+		<origin
+			xyz="0.022901 -0.002308 0.262307"
+			rpy="-1.657732 0.006578 -1.594366"/>
+		<parent link="Subsystem63(RL_Pitch_Arm)"/>
+		<child link="Subsystem64(RL_Leg)"/>
+		<axis xyz="0 0 1"/>
+		<limit
+			lower="-3.14"
+			upper="3.14"
+			effort="10"
+			velocity="100"/>
 	</joint>
 </robot>

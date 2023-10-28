@@ -103,6 +103,7 @@ typedef struct SubsystemData
 	double pen_z_ref;
 	double k_contact;
 	double c_contact;
+	std::string name;
 }SubsystemData;
 
 typedef struct OutputData
