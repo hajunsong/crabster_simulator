@@ -13,15 +13,14 @@
 
 #include "rviz.h"
 
-#include "Common.h"
-#include "Inputs.h"
-#include "MBD_RecursiveII.h"
-#include "Integrator.h"
-#include "Outputs.h"
+#include <Eigen/Core>
+#include <Eigen/Dense>
 
-QT_BEGIN_NAMESPACE
+#include <jsoncpp/json/json.h>
+#include <iostream>
+#include <fstream>
+
 namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
@@ -34,11 +33,6 @@ public:
 private:
     Ui::MainWindow *ui;
     Rviz *rvizRobot;
-
-    Inputs* m_inputs;
-	MBD_RecursiveII* m_dynamics;
-	Integrator* m_integrator;
-	Outputs* m_outputs;
 
 public slots:
     void btnLoadClicked();
