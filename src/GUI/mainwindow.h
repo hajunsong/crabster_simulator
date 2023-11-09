@@ -2,7 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QStringList>
+#include <QProcess>
 
+#include <ros/ros.h>
+#include <ros/package.h>
 #include <rviz/render_panel.h>
 #include <rviz/visualization_manager.h>
 #include <rviz/tool_manager.h>

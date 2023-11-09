@@ -12,7 +12,6 @@ public:
     Rviz();
 
     void initRvizRobotModel(void *_ui);
-    void initRvizCameraView(void *_ui);
 
 private:
     rviz::VisualizationManager  *m_RvizManager;
@@ -23,6 +22,5 @@ private:
     rviz::Display               *m_RvizRobotModel;
 
     void setTopicRobot();
-    void setTopicCamera();
 };
 

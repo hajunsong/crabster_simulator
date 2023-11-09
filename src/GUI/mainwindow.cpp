@@ -50,8 +50,11 @@ MainWindow::~MainWindow()
 void MainWindow::btnLoadClicked()
 {
 	 // json file direction
-    std::string json_dir = "/mnt/c/Users/hj/Desktop/KRISO/ros_ws/src/crabster_simulator/data/input_data/";
+    // std::string json_dir = "/mnt/c/Users/hj/Desktop/KRISO/ros_ws/src/crabster_simulator/data/input_data/";
     // std::string json_dir = "/home/keti/Project/KRISO/CRABSTER/ros_ws/src/crabster_simulator/data/input_data/";
+
+	std::string path = ros::package::getPath("crabster_simulator");
+	std::string json_dir = path + "/data/input_data/";
 
 	// read simulation parameters
 	SimulationData SimData = m_inputs->readSimulationParameter(json_dir, m_dynamics);
@@ -292,6 +295,8 @@ void MainWindow::btnLoadClicked()
 
 void MainWindow::btnModelClicked()
 {
+	system("gnome-terminal -x sh -c \"roslaunch crabster_simulator display.launch\"");
+
 	rvizRobot = new Rviz();
 	rvizRobot->initRvizRobotModel(ui->vlRobotModel);
 }
