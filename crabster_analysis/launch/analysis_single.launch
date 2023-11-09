@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="crabster_analysis" type="crabster_analysis" name="crabster_analysis_single" output="screen" />
+</launch>
