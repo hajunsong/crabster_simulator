@@ -341,10 +341,15 @@ void MainWindow::btnLoadClicked()
 
 void MainWindow::btnModelClicked()
 {
-	system("gnome-terminal -x sh -c \"roslaunch crabster_visual display.launch\"");
+	system("gnome-terminal -- sh -c \"roslaunch crabster_visual display.launch\"");
+	// system("roslaunch crabster_visual display.launch && exit");
+
+	std::cout << "=====================================================================================================================" << std::endl;
 
 	rvizRobot = new Rviz();
 	rvizRobot->initRvizRobotModel(ui->vlRobotModel);
+
+	ui->btnModel->setEnabled(false);
 }
 
 void MainWindow::btnRunClicked()

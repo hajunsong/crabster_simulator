@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
 	roslib
 	rviz
 	std_msgs
+	crabster_msgs
 )
 
 ###################################

@@ -6,11 +6,13 @@
         "/opt/ros/noetic/lib/python3/dist-packages"
     ],
     "files.associations": {
-        "optional": "cpp",
-        "variant": "cpp",
-        "array": "cpp",
         "string": "cpp",
+        "array": "cpp",
+        "bitset": "cpp",
         "string_view": "cpp",
-        "fstream": "cpp"
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
     }
 }

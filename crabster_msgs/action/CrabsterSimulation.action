@@ -1,0 +1,17 @@
+#goal definition
+float32 start_time
+float32 end_time
+float32 integration_stepsize
+std_msgs/String anlaysis_method
+std_msgs/String solver
+float32 gravity
+float32[] gravity_axis
+float32[] rotational_axis
+float32[] translational_axis
+---
+#result definition
+bool complete
+---
+#feedback
+float32 time_current
+float32 percent_complete

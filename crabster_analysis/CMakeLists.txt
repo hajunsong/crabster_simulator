@@ -7,6 +7,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   roslib
   std_msgs
+  crabster_msgs
+  actionlib
 )
 
 catkin_package(
@@ -16,28 +18,17 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
 find_package(Eigen3 REQUIRED)
 
 file(GLOB SOURCES src/*.cpp)
-file(GLOB HEADERS include/*.h)
 
 include_directories(
+	${catkin_INCLUDE_DIRS}
 	${EIGEN3_INCLUDE_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-add_executable(${PROJECT_NAME}_single ${SOURCES} main_src/KRISO_CRABSTER.cpp ${HEADERS})
-add_dependencies(${PROJECT_NAME}_single ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}) 
-target_link_libraries(${PROJECT_NAME}_single ${catkin_LIBRARIES} -ljsoncpp)
-install(TARGETS ${PROJECT_NAME}_single RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-add_executable(${PROJECT_NAME}_node ${SOURCES} main_src/KRISO_CRABSTER_NODE.cpp ${HEADERS})
+add_executable(${PROJECT_NAME}_node ${SOURCES})
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}) 
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} -ljsoncpp)
 install(TARGETS ${PROJECT_NAME}_node RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

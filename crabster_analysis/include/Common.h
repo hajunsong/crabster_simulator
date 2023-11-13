@@ -39,6 +39,9 @@ extern std::map<int, int> nJointMotion;
 // analysis method
 extern int analysis_method;
 
+// Y vector
+extern Eigen::VectorXd Y;
+
 // boolean vector
 typedef Eigen::Array<bool, Eigen::Dynamic, 1> ArrayXb;
 

@@ -28,6 +28,8 @@
   <exec_depend>roslib</exec_depend>
   <exec_depend>rviz</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+  
+  <build_depend>crabster_msgs</build_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

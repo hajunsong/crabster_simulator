@@ -1,3 +1,5 @@
 <launch>
-    <node pkg="crabster_analysis" type="crabster_analysis" name="crabster_analysis_node" output="screen" />
+    <arg name="mode" default="single"/>
+    <param name="mode" type="string" value="$(arg mode)"/>
+    <node pkg="crabster_analysis" type="crabster_analysis_node" name="crabster_analysis_node" output="screen" />
 </launch>
