@@ -1,16 +1,16 @@
 #goal definition
-float32 simulation_time
-float32 integration_stepsize
+float64 simulation_time
+float64 integration_stepsize
 std_msgs/String analysis_method
 std_msgs/String solver
-float32 gravity
-float32[3] gravity_axis
-float32[3] rotational_axis
-float32[3] translational_axis
+float64 gravity
+float64[3] gravity_axis
+float64[3] rotational_axis
+float64[3] translational_axis
 ---
 #result definition
 bool complete
 ---
 #feedback
-float32 time_current
-float32 percent_complete
+float64 time_current
+float64 percent_complete

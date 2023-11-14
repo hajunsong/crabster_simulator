@@ -28,10 +28,6 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "crabster_analysis_node");
 	ros::NodeHandle nh;
 
-    std::string mode;
-    nh.getParam("mode", mode);
-    ROS_INFO("mode : %s", mode.c_str());
-
     Crabster crabster("crabster_analysis_server", nh);
 
     crabster_msgs::CrabsterPose msg;
@@ -39,7 +35,7 @@ int main(int argc, char** argv)
 
     ros::Rate loop_rate(100);
 
-    crabster.run_single_init();
+    // crabster.run_single_init();
 
     while(ros::ok())
     {
