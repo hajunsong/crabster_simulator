@@ -17,7 +17,10 @@ std::map<int, int> nJointMotion;
 int analysis_method;
 
 // Y vector
-Eigen::VectorXd Y;
+Eigen::VectorXd Y, dY;
+
+// current time stamp
+double t_current;
 /* ============= global values =================================================== */
 
 int main(int argc, char** argv)
@@ -31,24 +34,15 @@ int main(int argc, char** argv)
 
     Crabster crabster("crabster_analysis_server", nh);
 
-    if(mode == "single")
-    {
-        crabster.run_single();
-    }
-    else if(mode == "server")
-    {
-
-    }
-
     crabster_msgs::CrabsterPose msg;
     ros::Publisher pubCrabsterPose = nh.advertise<crabster_msgs::CrabsterPose>("crabster_pose", 1);
 
     ros::Rate loop_rate(100);
 
+    crabster.run_single_init();
+
     while(ros::ok())
     {
-        // ROS_INFO("Y vector size : %ld", Y.size());
-
         for(uint i = 0; i < Y.size(); i++){
             msg.pose.push_back(Y(i));
         }
@@ -59,7 +53,6 @@ int main(int argc, char** argv)
 
         ros::spinOnce();
         loop_rate.sleep();
-
     }
 
 	return 0;

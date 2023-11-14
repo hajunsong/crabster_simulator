@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+const double eps = 1e-7;
+
 class Crabster
 {
 protected:
@@ -25,12 +27,12 @@ public:
     Crabster(std::string name, ros::NodeHandle nh);
     ~Crabster();
 
+    void run_single_init();
     void run_single();
     void executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &goal);
 
-    Eigen::VectorXd getCurrentYvector(){return Y;};
-
     static void *run_single_func(void *arg);
+
 
 private:
     // json file direction
@@ -44,4 +46,7 @@ private:
 	Outputs* m_outputs;
 
     pthread_t run_single_thread;
+
+    double t_end, integrationStep, dataSaveStep;
+    int solver, dataSave_count;;
 };

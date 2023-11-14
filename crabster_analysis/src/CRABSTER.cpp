@@ -6,21 +6,99 @@ Crabster::Crabster(std::string name, ros::NodeHandle nh) : as(nh, name, boost::b
 	path = ros::package::getPath("crabster_analysis");
     json_dir = path + "/data/input_data/";
 
+    // class header
+	m_inputs = new Inputs();
+	m_dynamics = new MBD_RecursiveII();
+	m_integrator = new Integrator();
+	m_outputs = new Outputs();
+
 	as.start();
 }
 
 Crabster::~Crabster()
 {
+	delete(m_inputs);
+    delete(m_dynamics);
+	delete(m_integrator);
+	delete(m_outputs);
 }
 
 void Crabster::executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &goal)
 {
+	ros::Rate loop_rate(100);
+	bool success = true;
 
+	ROS_INFO("%s: Executing, creating crabster simulation", action_name.c_str());
+	ROS_INFO("simulation parameter");
+	ROS_INFO("simulation time : %f", goal->simulation_time);
+	ROS_INFO("itegration step size : %f", goal->integration_stepsize);
+	ROS_INFO("gravity : %f", goal->gravity);
+	ROS_INFO("analysis method : %s", goal->analysis_method);
+	ROS_INFO("sovler : %s", goal->solver);
+	ROS_INFO("gravity_axis : %f, %f, %f", goal->gravity_axis[0], goal->gravity_axis[1], goal->gravity_axis[2]);
+	ROS_INFO("rotational_axis : %f, %f, %f", goal->rotational_axis[0], goal->rotational_axis[1], goal->rotational_axis[2]);
+	ROS_INFO("translational_axis : %f, %f, %f", goal->translational_axis[0], goal->translational_axis[1], goal->translational_axis[2]);
+
+	feedback.time_current = 0;
+	feedback.percent_complete = 0;
+
+	result.complete = false;
+
+	
+
+	result.complete = true;
+
+	as.setSucceeded(result);
+}
+
+void Crabster::run_single_init()
+{
+	// read simulation parameters
+	SimulationData SimData = m_inputs->readSimulationParameter(json_dir, m_dynamics);
+	g = SimData.g;
+	t_current = SimData.start_time;
+	t_end = SimData.end_time;
+	integrationStep = SimData.integration_stepSize;
+	dataSaveStep = SimData.dataSave_stepSize;
+	analysis_method = SimData.analysis_method;
+	solver = SimData.solver;
+
+	// read input data
+	Y = m_inputs->readInputData(json_dir, m_dynamics);
+	m_integrator->setMatixVectorSize();
+
+	// dynamics simulation
+	dataSave_count = 0;
+	Eigen::VectorXd dY(Y.size());
 }
 
 void Crabster::run_single()
 {
-	pthread_create(&run_single_thread, nullptr, run_single_func, this);
+	// pthread_create(&run_single_thread, nullptr, run_single_func, this);
+	// std::cout << "t_current = " << t_current << std::endl;
+
+	dY = m_dynamics->dynamics_analysis(t_current, Y);
+
+	// store output data
+	if (std::abs(t_current - dataSave_count * dataSaveStep) < eps)
+	{
+		m_outputs->storeOutputData(t_current, m_dynamics->getOutputData());
+		dataSave_count++;
+	}
+
+	IntegrationData integData;
+	switch (solver)
+	{
+	case INTEGRATOR_AB3:
+		integData = m_integrator->AB3(t_current, Y, dY, integrationStep);
+		break;
+	case INTEGRATOR_RK4:
+		integData = m_integrator->RK4(t_current, Y, dY, integrationStep, m_dynamics);
+		break;
+	}
+
+	Y = integData.Y_next;
+	t_current = integData.t_next;
 }
 
 void* Crabster::run_single_func(void *arg)

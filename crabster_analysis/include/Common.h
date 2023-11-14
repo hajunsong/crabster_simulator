@@ -41,6 +41,10 @@ extern int analysis_method;
 
 // Y vector
 extern Eigen::VectorXd Y;
+extern Eigen::VectorXd dY;
+
+// current time stamp
+extern double t_current;
 
 // boolean vector
 typedef Eigen::Array<bool, Eigen::Dynamic, 1> ArrayXb;
