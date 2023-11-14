@@ -40,6 +40,7 @@ int main(int argc, char** argv)
 
     }
 
+    crabster_msgs::CrabsterPose msg;
     ros::Publisher pubCrabsterPose = nh.advertise<crabster_msgs::CrabsterPose>("crabster_pose", 1);
 
     ros::Rate loop_rate(100);
@@ -49,10 +50,12 @@ int main(int argc, char** argv)
         // ROS_INFO("Y vector size : %ld", Y.size());
 
         for(uint i = 0; i < Y.size(); i++){
-            
+            msg.pose.push_back(Y(i));
         }
 
+        pubCrabsterPose.publish(msg);
 
+        msg.pose.clear();
 
         ros::spinOnce();
         loop_rate.sleep();

@@ -58,7 +58,7 @@ void* Crabster::run_single_func(void *arg)
 
 	while (std::abs(t_current - (t_end + integrationStep)) > eps)
 	{
-		// std::cout << "t_current = " << t_current << std::endl;
+		std::cout << "t_current = " << t_current << std::endl;
 
 		dY = pThis->m_dynamics->dynamics_analysis(t_current, Y);
 
@@ -81,6 +81,8 @@ void* Crabster::run_single_func(void *arg)
 
 		Y = integData.Y_next;
 		t_current = integData.t_next;
+
+		usleep(1000000);
 	}
 
 	std::chrono::high_resolution_clock::time_point t_stop = std::chrono::high_resolution_clock::now();
