@@ -20,6 +20,10 @@
 #include <iostream>
 #include <fstream>
 
+#include <crabster_msgs/CrabsterPose.h>
+#include <actionlib/client/simple_action_client.h>
+#include <crabster_msgs/CrabsterSimulationAction.h>
+
 namespace Ui { class MainWindow; }
 
 class MainWindow : public QMainWindow
@@ -32,7 +36,21 @@ public:
 
 private:
     Ui::MainWindow *ui;
+	
+    ros::NodeHandle nh;
+    
     Rviz *rvizRobot;
+
+    crabster_msgs::CrabsterPose crabsterPose;
+
+    void CrabsterPoseCB(const crabster_msgs::CrabsterPose &msg);
+    void CrabsterCompleteCB(const actionlib::SimpleClientGoalState &state, const crabster_msgs::CrabsterSimulationResultConstPtr &result);
+    void CrabsterFeedbackCB(const crabster_msgs::CrabsterSimulationFeedbackConstPtr &feedback);
+    void CrabsterActiveCB();
+
+    ros::Subscriber subCrabsterPose;
+    actionlib::SimpleActionClient<crabster_msgs::CrabsterSimulationAction> *ac;
+    crabster_msgs::CrabsterSimulationGoal goal;
 
 public slots:
     void btnLoadClicked();

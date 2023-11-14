@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
 	rviz
 	std_msgs
 	crabster_msgs
+	actionlib
 )
 
 ###################################

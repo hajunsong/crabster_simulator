@@ -28,6 +28,10 @@
   <exec_depend>roslib</exec_depend>
   <exec_depend>rviz</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+
+  <build_depend>action_lib</build_depend>
+  <build_export_depend>action_lib</build_export_depend>
+  <exec_depend>action_lib</exec_depend>
   
   <build_depend>crabster_msgs</build_depend>
 

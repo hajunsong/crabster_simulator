@@ -19,7 +19,9 @@ public:
 	void setData_Subsystem(std::map<int, std::vector<SubsystemData>> buf_map);
 	void setMatixVectorSize_Subsystem();
 
-	Eigen::VectorXd dynamics_analysis(double t_current, Eigen::VectorXd Y);
+	Eigen::VectorXd dynamics_analysis(double t_current, Eigen::VectorXd Y_ConvMethod);
+	Eigen::VectorXd dynamics_analysis_ConvMethod(Eigen::VectorXd Y_ConvMethod);
+	std::map<int, Eigen::VectorXd> dynamics_analysis_SubMethod(std::map<int, Eigen::VectorXd> Y_SubMethod);
 
 	OutputData getOutputData();
 
@@ -85,7 +87,7 @@ private:
 	std::map<int, std::vector<Eigen::Matrix3d>> Jjc;
 	std::map<int, std::vector<Eigen::MatrixXd>> Mj_hat;
 	std::map<int, std::vector<Eigen::VectorXd>> Qj_hat;
-	std::map<int, std::vector<Eigen::VectorXd>> Qj_RSDA_hat;
+	std::map<int, Eigen::VectorXd> Qj_RSDA;
 	std::map<int, std::vector<Eigen::MatrixXd>> Kj;
 	std::map<int, std::vector<Eigen::VectorXd>> Lj;
 	std::map<int, Eigen::MatrixXd> Myy;
@@ -95,8 +97,7 @@ private:
 	std::map<int, Eigen::VectorXd> Pq;
 	std::map<int, Eigen::MatrixXd> Me;
 	std::map<int, Eigen::VectorXd> Pe;
-	std::map<int, std::vector<Eigen::VectorXd>> dYj_hat;
-	std::map<int, std::vector<Eigen::VectorXd>> Rji;
+	Eigen::VectorXd dY0_hat;
 
 	Eigen::MatrixXi removeRowi(Eigen::MatrixXi ref, ArrayXb rowToRemove);
 	Eigen::MatrixXd removeRowd(Eigen::MatrixXd ref, ArrayXb rowToRemove);
@@ -108,24 +109,21 @@ private:
 	Eigen::Matrix3d generalRotation(Eigen::Vector3d axis, double rad);
 	Eigen::Vector4d TransformationMatrixToEulerParameter(Eigen::Matrix3d R);
 
-	void Y2PosVel(double t_current, Eigen::VectorXd Y);
-
+	void Y2PosVel_BaseBody(Eigen::VectorXd Y_BaseBody);
 	void position_BaseBody();
 	void velocity_BaseBody();
-	void acceleration_BaseBody();
 	void massforce_BaseBody();
-	
+	void EQM_BaseBody();
+	Eigen::VectorXd VelAcc2dY_BaseBody();
+
+	void Y2PosVel_Subsystem(double t_current, int sub, Eigen::VectorXd Y_Subsystem);
 	void position_Subsystem(int sub);
 	void velocity_Subsystem(int sub);
-	void acceleration_Subsystem(int sub);
 	void massforce_Subsystem(int sub);
 	void effectiveTerm_Subsystem(int sub);
+	void EQM_Subsystem(int sub);
+	Eigen::VectorXd VelAcc2dY_Subsystem(int sub);
 
 	void EQM_WholeBody();
-	void EQM_BaseBody();
-	void EQM_Subsystem(int sub);
-
-	void jointReactionForce(int sub);
-
-	Eigen::VectorXd VelAcc2dY();
 };
+

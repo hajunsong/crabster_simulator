@@ -3,7 +3,9 @@
 SimulationData Inputs::readSimulationParameter(std::string json_dir, MBD_RecursiveII* m_dynamics)
 {
 	std::string file_name = json_dir + "AA_Simulation_Parameter.json";
+
 	std::ifstream json_file(file_name, std::ifstream::binary);
+
 	Json::CharReaderBuilder builder;
 	builder["collectComments"] = false;
 	Json::Value data;
@@ -71,7 +73,7 @@ Eigen::VectorXd Inputs::readInputData(std::string json_dir, MBD_RecursiveII* m_d
 	{
 		buf = jsonRead_Subsystem(json_dir, sub_id, body_id);
 
-		if (buf.read_ok)
+		if (buf.ReadOK)
 		{
 			buf_Subsystem[sub_id].push_back(buf);
 			if (buf.flag_motion)
@@ -97,8 +99,9 @@ Eigen::VectorXd Inputs::readInputData(std::string json_dir, MBD_RecursiveII* m_d
 	}
 
 	// state vector
-	Eigen::VectorXd Y(13);
+	Eigen::VectorXd Y;
 
+	Y.resize(13);
 	Y.segment(0, 3) = buf_BaseBody.r0;
 	Y.segment(3, 4) = buf_BaseBody.p0;
 	Y.segment(7, 3) = buf_BaseBody.dr0;
@@ -106,11 +109,9 @@ Eigen::VectorXd Inputs::readInputData(std::string json_dir, MBD_RecursiveII* m_d
 
 	int idx = 13;
 	nSubsystem = buf_Subsystem.size();
-	std::cout << "\nNumber of subsystems = " << nSubsystem << std::endl;
 	for (int sub = 1; sub <= nSubsystem; sub++)
 	{
 		nSubBody[sub] = buf_Subsystem[sub].size();
-		std::cout << "Number of bodies for subsystem[" << sub << "]" << " = " << nSubBody[sub] << std::endl;
 		Y.conservativeResize(idx + 2 * (nSubBody[sub] - nJointMotion[sub]));
 		cnt = 0;
 		for (int i = 0; i < nSubBody[sub]; i++)
@@ -143,12 +144,9 @@ BaseBodyData Inputs::jsonRead_BaseBody(std::string json_dir)
 	bool ok = parseFromStream(builder, json_file, &data, &errs);
 
 	BaseBodyData buf;
-	buf.read_ok = ok;
+	buf.ReadOK = ok;
 	if (ok)
 	{
-		// name
-		buf.name = data["name"].asString();
-
 		// check contact & motion
 		buf.flag_contact = data["flag contact"].asBool();
 		buf.flag_motion = data["flag motion"].asBool();
@@ -209,12 +207,9 @@ SubsystemData Inputs::jsonRead_Subsystem(std::string json_dir, int id_subsystem,
 	bool ok = parseFromStream(builder, json_file, &data, &errs);
 	
 	SubsystemData buf;
-	buf.read_ok = ok;
+	buf.ReadOK = ok;
 	if (ok)
 	{
-		// name
-		buf.name = data["name"].asString();
-
 		// subsystem id
 		buf.subsystem_id = data["subsystem id"].asInt();
 

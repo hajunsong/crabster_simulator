@@ -8,11 +8,6 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 
-// base body constraint
-// When base body constraints are needed, just active define function
-#define BASEBODY_FIX
-#define BASEBODY_TRANS_Z
-
 // analysis method
 #define METHOD_CONVENTIONAL		0
 #define METHOD_SUBSYSTEM		1
@@ -76,8 +71,7 @@ typedef struct SimulationData
 // input of base body
 typedef struct BaseBodyData
 {
-	bool read_ok;
-	std::string name;
+	bool ReadOK;
 	bool flag_contact;
 	bool flag_motion;
 	Eigen::Vector4d p0;
@@ -93,8 +87,7 @@ typedef struct BaseBodyData
 // input of subsystem
 typedef struct SubsystemData
 {
-	bool read_ok;
-	std::string name;
+	bool ReadOK;
 	int subsystem_id;
 	int jointType;
 	int parent_id;
@@ -137,7 +130,6 @@ typedef struct OutputData
 		std::map<int, Eigen::VectorXd> qj;
 		std::map<int, Eigen::VectorXd> dqj;
 		std::map<int, Eigen::VectorXd> ddqj;
-		std::map<int, std::vector<Eigen::VectorXd>> Rji;
 		std::map<int, std::vector<Eigen::Vector3d>> rjc;
 		std::map<int, std::vector<Eigen::Vector4d>> pj;
 		std::map<int, std::vector<Eigen::Vector3d>> drjc;

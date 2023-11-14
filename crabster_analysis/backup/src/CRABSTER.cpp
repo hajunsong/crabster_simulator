@@ -29,7 +29,6 @@ void Crabster::executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &go
 	ROS_INFO("simulation parameter");
 	ROS_INFO("simulation time : %f", goal->simulation_time);
 	ROS_INFO("itegration step size : %f", goal->integration_stepsize);
-	ROS_INFO("datasave step size : %f", goal->datasave_stepsize);
 	ROS_INFO("gravity : %f", goal->gravity);
 	ROS_INFO("analysis method : %s", goal->analysis_method.data.c_str());
 	ROS_INFO("sovler : %s", goal->solver.data.c_str());
@@ -46,7 +45,6 @@ void Crabster::executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &go
 	t_current = 0;
 	t_end = goal->simulation_time;
 	integrationStep = goal->integration_stepsize;
-	dataSaveStep = goal->datasave_stepsize;
 	if (goal->analysis_method.data ==  "Conventional") 
 	{ 
 		analysis_method = METHOD_CONVENTIONAL;

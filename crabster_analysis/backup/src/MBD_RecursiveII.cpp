@@ -62,9 +62,8 @@ void MBD_RecursiveII::setMatixVectorSize_BaseBody()
 	Jjc[0].assign(1, Eigen::Matrix3d::Zero());
 	Mj_hat[0].assign(1, Eigen::MatrixXd::Zero(6, 6));
 	Qj_hat[0].assign(1, Eigen::VectorXd::Zero(6));
-	Qj_RSDA_hat[0].assign(1, Eigen::VectorXd::Zero(6));
 
-	dYj_hat[0].assign(1, Eigen::VectorXd::Zero(6));
+	dY0_hat = Eigen::VectorXd::Zero(6);
 }
 
 void MBD_RecursiveII::setData_Subsystem(std::map<int, std::vector<SubsystemData>> buf_map)
@@ -206,7 +205,7 @@ void MBD_RecursiveII::setMatixVectorSize_Subsystem()
 		Jjc[sub].assign(nSubBody[sub], Eigen::Matrix3d::Zero());
 		Mj_hat[sub].assign(nSubBody[sub], Eigen::MatrixXd::Zero(6, 6));
 		Qj_hat[sub].assign(nSubBody[sub], Eigen::VectorXd::Zero(6));
-		Qj_RSDA_hat[sub].assign(nSubBody[sub], Eigen::VectorXd::Zero(6));
+		Qj_RSDA[sub] = Eigen::VectorXd::Zero(nSubBody[sub]);
 		Kj[sub].assign(nSubBody[sub], Eigen::MatrixXd::Zero(6, 6));
 		Lj[sub].assign(nSubBody[sub], Eigen::VectorXd::Zero(6));
 
@@ -218,9 +217,6 @@ void MBD_RecursiveII::setMatixVectorSize_Subsystem()
 
 		Me[sub] = Eigen::MatrixXd::Zero(6, 6);
 		Pe[sub] = Eigen::VectorXd::Zero(6);
-
-		dYj_hat[sub].assign(nSubBody[sub], Eigen::VectorXd::Zero(6));
-		Rji[sub].assign(nSubBody[sub], Eigen::VectorXd::Zero(6));
 	}
 }
 
@@ -461,54 +457,19 @@ Eigen::Vector4d MBD_RecursiveII::TransformationMatrixToEulerParameter(Eigen::Mat
 	return p;
 }
 
-void MBD_RecursiveII::Y2PosVel(double t_current, Eigen::VectorXd Y)
+void MBD_RecursiveII::Y2PosVel_BaseBody(Eigen::VectorXd Y_BaseBody)
 {
 	// r0
-	rj[0][0] = Y.segment(0, 3);
+	rj[0][0] = Y_BaseBody.segment(0, 3);
 
 	// p0
-	pj[0][0] = Y.segment(3, 4);
+	pj[0][0] = Y_BaseBody.segment(3, 4);
 
 	// dr0
-	drj[0][0] = Y.segment(7, 3);
+	drj[0][0] = Y_BaseBody.segment(7, 3);
 
 	// w0
-	wj[0][0] = Y.segment(10, 3);
-
-	int idx = 13;
-	int cnt = 0;
-	Eigen::Vector3d motionData;
-	for (int sub = 1; sub <= nSubsystem; sub++)
-	{
-		cnt = 0;
-		for (int i = 0; i < nSubBody[sub]; i++)
-		{
-			if (flag_motion[sub](i))
-			{
-				motionData = m_motion->inputMotion(t_current, sub, i);
-
-				// qj
-				qj[sub](i) = motionData(0);
-
-				// dqj
-				dqj[sub](i) = motionData(1);
-
-				// ddqj
-				ddqj[sub](i) = motionData(2);
-			}
-			else
-			{
-				// qj
-				qj[sub](i) = Y(idx + cnt);
-
-				// dqj
-				dqj[sub](i) = Y(idx + cnt + nSubBody[sub] - nJointMotion[sub]);
-
-				cnt++;
-			}
-		}
-		idx = idx + 2 * (nSubBody[sub] - nJointMotion[sub]);
-	}
+	wj[0][0] = Y_BaseBody.segment(10, 3);
 }
 
 void MBD_RecursiveII::position_BaseBody()
@@ -552,16 +513,6 @@ void MBD_RecursiveII::velocity_BaseBody()
 	//std::cout << "\ndr0c = \n" << drjc[0][0] << std::endl;
 }
 
-void MBD_RecursiveII::acceleration_BaseBody()
-{
-	// angular acceleration
-	dwj[0][0] = dYj_hat[0][0].segment(3, 3);
-
-	// linear acceleration
-	ddrj[0][0] = dYj_hat[0][0].segment(0, 3) - skew(drj[0][0]) * wj[0][0] - skew(rj[0][0]) * dwj[0][0];
-	ddrjc[0][0] = ddrj[0][0] + skew(dwj[0][0]) * rhoj[0][0] + skew(wj[0][0]) * skew(wj[0][0]) * rhoj[0][0];
-}
-
 void MBD_RecursiveII::massforce_BaseBody()
 {
 	// inertia matrix at center of mass with respect to global reference frame 
@@ -584,15 +535,81 @@ void MBD_RecursiveII::massforce_BaseBody()
 	Eigen::Vector3d F0c = F0c_g + F0c_b;
 	Eigen::Vector3d T0c; T0c.setZero();
 
-	// RSDA torque
-	Qj_RSDA_hat[0][0].setZero();
-
 	// generalized force vector
 	Qj_hat[0][0].segment(0, 3) = F0c + mj[0](0) * skew(drjc[0][0]) * wj[0][0];
 	Qj_hat[0][0].segment(3, 3) = T0c + skew(rjc[0][0]) * F0c + mj[0](0) * skew(rjc[0][0]) * skew(drjc[0][0]) * wj[0][0] - skew(wj[0][0]) * Jjc[0][0] * wj[0][0];
 
 	//std::cout << "\nM0_hat = \n" << Mj_hat[0][0] << std::endl;
 	//std::cout << "\nQ0_hat = \n" << Qj_hat[0][0] << std::endl;
+}
+
+void MBD_RecursiveII::EQM_BaseBody()
+{
+	// summation of effective mass & force
+	Eigen::MatrixXd M_sum(6, 6); M_sum.setZero();
+	Eigen::VectorXd P_sum(6); P_sum.setZero();
+	for (int i = 1; i <= nSubsystem; i++)
+	{
+		M_sum = M_sum + Me[i];
+		P_sum = P_sum + Pe[i];
+	}
+
+	// solve base body EQM
+	dY0_hat = (Mj_hat[0][0] + M_sum).inverse()*(Qj_hat[0][0] + P_sum);
+	//dY0_hat.setZero();
+
+	// angular acceleration
+	dwj[0][0] = dY0_hat.segment(3, 3);
+
+	// linear acceleration
+	ddrj[0][0] = dY0_hat.segment(0, 3) - skew(drj[0][0]) * wj[0][0] - skew(rj[0][0]) * dwj[0][0];
+	ddrjc[0][0] = ddrj[0][0] + skew(dwj[0][0]) * rhoj[0][0] + skew(wj[0][0]) * skew(wj[0][0]) * rhoj[0][0];
+}
+
+Eigen::VectorXd MBD_RecursiveII::VelAcc2dY_BaseBody()
+{
+	// state vector
+	Eigen::VectorXd dY_BaseBody(13);
+
+	dY_BaseBody.segment(0, 3) = drj[0][0];
+	dY_BaseBody.segment(3, 4) = dp0;
+	dY_BaseBody.segment(7, 3) = ddrj[0][0];
+	dY_BaseBody.segment(10, 3) = dwj[0][0];
+
+	return dY_BaseBody;
+}
+
+void MBD_RecursiveII::Y2PosVel_Subsystem(double t_current, int sub, Eigen::VectorXd Y_Subsystem)
+{
+	int cnt = 0;
+	Eigen::Vector3d motionData;
+
+	for (int i = 0; i < nSubBody[sub]; i++)
+	{
+		if (flag_motion[sub](i))
+		{
+			motionData = m_motion->inputMotion(t_current, sub, i);
+
+			// qj
+			qj[sub](i) = motionData(0);
+
+			// dqj
+			dqj[sub](i) = motionData(1);
+
+			// ddqj
+			ddqj[sub](i) = motionData(2);
+		}
+		else
+		{
+			// qj
+			qj[sub](i) = Y_Subsystem(cnt);
+
+			// dqj
+			dqj[sub](i) = Y_Subsystem(cnt + nSubBody[sub] - nJointMotion[sub]);
+
+			cnt++;
+		}
+	}
 }
 
 void MBD_RecursiveII::position_Subsystem(int sub)
@@ -760,38 +777,6 @@ void MBD_RecursiveII::velocity_Subsystem(int sub)
 	}
 }
 
-void MBD_RecursiveII::acceleration_Subsystem(int sub)
-{
-	//Eigen::Vector3d d_dijpp;
-	//Eigen::Vector3d dd_dijpp;
-	int curSeq = 0;
-	int preSeq = 0;
-
-	for (int i = 0; i < nSubBody[sub]; i++)
-	{
-		// select subsystem body form loopSearch function
-		curSeq = subBodySeq[sub](i) - 1;
-		preSeq = pcList[sub](curSeq, 0) - 1;
-
-		// subsystem acceleration state 
-		if (preSeq == -1)
-		{
-			dYj_hat[sub][curSeq] = dYj_hat[0][0] + Bj[sub][curSeq] * ddqj[sub](curSeq) + Dj[sub][curSeq];
-		}
-		else
-		{
-			dYj_hat[sub][curSeq] = dYj_hat[sub][preSeq] + Bj[sub][curSeq] * ddqj[sub](curSeq) + Dj[sub][curSeq];
-		}
-
-		// angular acceleration
-		dwj[sub][curSeq] = dYj_hat[sub][curSeq].segment(3, 3);
-
-		// linear acceleration
-		ddrj[sub][curSeq] = dYj_hat[sub][curSeq].segment(0, 3) - skew(drj[sub][curSeq]) * wj[sub][curSeq] - skew(rj[0][0]) * dwj[sub][curSeq];
-		ddrjc[sub][curSeq] = ddrj[sub][curSeq] + skew(dwj[sub][curSeq]) * rhoj[sub][curSeq] + skew(wj[sub][curSeq]) * skew(wj[sub][curSeq]) * rhoj[sub][curSeq];
-	}
-}
-
 void MBD_RecursiveII::massforce_Subsystem(int sub)
 {
 	Eigen::Vector3d Fjc_g_sub;
@@ -804,7 +789,6 @@ void MBD_RecursiveII::massforce_Subsystem(int sub)
 	int preSeq = 0;
 	
 	// initialization of composite mass & force -> setZero
-	Qj_RSDA_hat[sub].assign(nSubBody[sub], Eigen::VectorXd::Zero(6));
 	Kj[sub].assign(nSubBody[sub], Eigen::MatrixXd::Zero(6, 6));
 	Lj[sub].assign(nSubBody[sub], Eigen::VectorXd::Zero(6));
 	
@@ -843,27 +827,16 @@ void MBD_RecursiveII::massforce_Subsystem(int sub)
 		}
 
 		// total force/torque vector at center of mass with respect to global reference frame 
-		// need Dr.Han.........
 		Fjc_sub = Fjc_g_sub + Fjc_b_sub + Fjc_c_sub;
 		Tjc_sub = Tjc_c_sub;
-
-		// RSDA torque
-		double T_RSDA = m_force->RSDATorque(qj[sub](curSeq), dqj[sub](curSeq), qj_ini_RSDA[sub](curSeq), k_RSDA[sub](curSeq), c_RSDA[sub](curSeq));
-		Qj_RSDA_hat[sub][curSeq].segment(3, 3) = Qj_RSDA_hat[sub][curSeq].segment(3, 3) - T_RSDA * Hj[sub][curSeq];
-		if (preSeq != -1)
-		{
-			Qj_RSDA_hat[sub][preSeq].segment(3, 3) = Qj_RSDA_hat[sub][preSeq].segment(3, 3) + T_RSDA * Hj[sub][curSeq];
-		}
-		else
-		{
-			Qj_RSDA_hat[0][0].segment(3, 3) = Qj_RSDA_hat[0][0].segment(3, 3) + T_RSDA * Hj[sub][curSeq];
-		}
 
 		// generalized force vector
 		Qj_hat[sub][curSeq].segment(0, 3) = Fjc_sub + mj[sub](curSeq) * skew(drjc[sub][curSeq]) * wj[sub][curSeq];
 		Qj_hat[sub][curSeq].segment(3, 3) = Tjc_sub + skew(rjc[sub][curSeq]) * Fjc_sub + mj[sub](curSeq) * skew(rjc[sub][curSeq]) * skew(drjc[sub][curSeq]) * wj[sub][curSeq]
 			- skew(wj[sub][curSeq]) * Jjc[sub][curSeq] * wj[sub][curSeq];
-		Qj_hat[sub][curSeq] = Qj_hat[sub][curSeq] + Qj_RSDA_hat[sub][curSeq];
+
+		// RSDA torque
+		Qj_RSDA[sub](curSeq) = m_force->RSDATorque(qj[sub](curSeq), dqj[sub](curSeq), qj_ini_RSDA[sub](curSeq), k_RSDA[sub](curSeq), c_RSDA[sub](curSeq));
 
 		// composite mass & force
 		Kj[sub][curSeq] = Mj_hat[sub][curSeq] + Kj[sub][curSeq];
@@ -930,7 +903,7 @@ void MBD_RecursiveII::massforce_Subsystem(int sub)
 
 	for (int j = 1; j < loopList[sub].cols() - 1; j++)
 	{
-		for (int k = j + 1; k < loopList[sub].cols() - 1; k++)
+		for (int k = j + 1; k < loopList[sub].cols(); k++)
 		{
 			for (int i = 0; i < loopList[sub].rows(); i++)
 			{
@@ -968,8 +941,7 @@ void MBD_RecursiveII::massforce_Subsystem(int sub)
 	{
 		if (!flag_motion[sub](i))
 		{
-			//Pq[sub](i) = Bj[sub][i].transpose() * (Lj[sub][i] - Kj[sub][i] * Dj_sum[i]) - Qj_RSDA[sub](i);
-			Pq[sub](i) = Bj[sub][i].transpose() * (Lj[sub][i] - Kj[sub][i] * Dj_sum[i]);
+			Pq[sub](i) = Bj[sub][i].transpose() * (Lj[sub][i] - Kj[sub][i] * Dj_sum[i]) - Qj_RSDA[sub](i);
 		}
 
 	}
@@ -1008,6 +980,99 @@ void MBD_RecursiveII::effectiveTerm_Subsystem(int sub)
 	}
 }
 
+void MBD_RecursiveII::EQM_Subsystem(int sub)
+{
+	Eigen::VectorXd sol;
+	Eigen::Vector3d d_dijpp;
+	Eigen::Vector3d dd_dijpp;
+	int curSeq = 0;
+	int preSeq = 0;
+	int cnt = 0;
+
+	// solve subsystem EQM
+	cnt = 0;
+	if (nSubBody[sub] - nJointMotion[sub] != 0)
+	{
+		sol = Mqq[sub].inverse() * (Pq[sub] - Myq[sub].transpose() * dY0_hat);
+
+		for (int i = 0; i < nSubBody[sub]; i++)
+		{
+			if (!flag_motion[sub](i))
+			{
+				ddqj[sub](i) = sol(cnt);
+				cnt++;
+			}
+		}
+	}
+
+	for (int i = 0; i < nSubBody[sub]; i++)
+	{
+		// select subsystem body form loopSearch function
+		curSeq = subBodySeq[sub](i) - 1;
+		preSeq = pcList[sub](curSeq, 0) - 1;
+
+		// value related joint velocity
+		switch (jointType[sub](curSeq))
+		{
+		case JOINT_REVOLUTE:
+			d_dijpp.setZero();
+			dd_dijpp.setZero();
+			break;
+		case JOINT_TRNSLATIONAL:
+			d_dijpp = transAxis * dqj[sub](curSeq);
+			dd_dijpp = transAxis * ddqj[sub](curSeq);
+			break;
+		}
+
+		// angular acceleration
+		if(preSeq == -1)
+		{
+			// dwi = dw0
+			dwj[sub][curSeq] = dwj[0][0] + Hj[sub][curSeq] * ddqj[sub](curSeq) + dHj[sub][curSeq] * dqj[sub](curSeq);
+		}
+		else
+		{
+			// dwi != dw0
+			dwj[sub][curSeq] = dwj[sub][preSeq] + Hj[sub][curSeq] * ddqj[sub](curSeq) + dHj[sub][curSeq] * dqj[sub](curSeq);
+		}
+
+		// linear acceleration
+		if (preSeq == -1)
+		{
+			// ddri = ddr0
+			ddrj[sub][curSeq] = ddrj[0][0] + (skew(dwj[0][0]) + skew(wj[0][0]) * skew(wj[0][0])) * (sij[sub][curSeq] + dij[sub][curSeq])
+				+ 2.0 * skew(wj[0][0]) * Aj[0][0] * Cij[sub][curSeq] * d_dijpp + Aj[0][0] * Cij[sub][curSeq] * dd_dijpp;
+		}
+		else
+		{
+			// ddri != ddr0
+			ddrj[sub][curSeq] = ddrj[sub][preSeq] + (skew(dwj[sub][preSeq]) + skew(wj[sub][preSeq]) * skew(wj[sub][preSeq])) * (sij[sub][curSeq] + dij[sub][curSeq])
+				+ 2.0 * skew(wj[sub][preSeq]) * Aj[sub][preSeq] * Cij[sub][curSeq] * d_dijpp + Aj[sub][preSeq] * Cij[sub][curSeq] * dd_dijpp;
+		}
+
+		ddrjc[sub][curSeq] = ddrj[sub][curSeq] + (skew(dwj[sub][curSeq]) + skew(wj[sub][curSeq]) * skew(wj[sub][curSeq])) * rhoj[sub][curSeq];
+	}
+}
+
+Eigen::VectorXd MBD_RecursiveII::VelAcc2dY_Subsystem(int sub)
+{
+	// state vector
+	Eigen::VectorXd dY_Sunsystem(2 * (nSubBody[sub] - nJointMotion[sub]));
+	int cnt = 0;
+
+	for (int i = 0; i < nSubBody[sub]; i++)
+	{
+		if (!flag_motion[sub](i))
+		{
+			dY_Sunsystem(cnt) = dqj[sub](i);
+			dY_Sunsystem(cnt + nSubBody[sub] - nJointMotion[sub]) = ddqj[sub](i);
+			cnt++;
+		}
+	}
+
+	return dY_Sunsystem;
+}
+
 void MBD_RecursiveII::EQM_WholeBody()
 {
 	int nSize = 6;
@@ -1016,7 +1081,6 @@ void MBD_RecursiveII::EQM_WholeBody()
 
 	// compute K0 & L0
 	K0 = Mj_hat[0][0];
-	Qj_hat[0][0] = Qj_hat[0][0] + Qj_RSDA_hat[0][0];
 	L0 = Qj_hat[0][0];
 	for (int sub = 1; sub <= nSubsystem; sub++)
 	{
@@ -1045,29 +1109,20 @@ void MBD_RecursiveII::EQM_WholeBody()
 		}
 	}
 
-#ifdef BASEBODY_FIX
-	M.block(0, 0, 6, 6).setIdentity();
-	M.block(0, 6, 6, nSize - 6).setZero();
-	M.block(6, 0, nSize - 6, 6).setZero();
-	Q.segment(0, 6).setZero();
-#endif
+	//M.block(0, 0, 6, 6).setIdentity();
+	//M.block(0, 6, 6, nSize - 6).setZero();
+	//M.block(6, 0, nSize - 6, 6).setZero();
+	//Q.segment(0, 6).setZero();
 
-#ifdef BASEBODY_TRANS_Z
-	M.block(0, 0, 6, 6).setIdentity();
-	M(2, 2) = K0(2, 2);
-	M.block(0, 6, 2, nSize - 6).setZero();
-	M.block(3, 6, 3, nSize - 6).setZero();
-	M.block(6, 0, nSize - 6, 2).setZero();
-	M.block(6, 3, nSize - 6, 3).setZero();
-	Q.segment(0, 6).setZero();
-	Q(2) = L0(2);
-#endif
-	
 	// solve whole body EQM
 	Eigen::VectorXd sol = M.inverse() * Q;
 
-	// base body acceleration state 
-	dYj_hat[0][0] = sol.segment(0, 6);
+	// angular acceleration
+	dwj[0][0] = sol.segment(3, 3);
+
+	// linear acceleration
+	ddrj[0][0] = sol.segment(0, 3) - skew(drj[0][0]) * wj[0][0] - skew(rj[0][0]) * dwj[0][0];
+	ddrjc[0][0] = ddrj[0][0] + skew(dwj[0][0]) * rhoj[0][0] + skew(wj[0][0]) * skew(wj[0][0]) * rhoj[0][0];
 
 	int idx = 6;
 	for (int sub = 1; sub <= nSubsystem; sub++)
@@ -1075,7 +1130,6 @@ void MBD_RecursiveII::EQM_WholeBody()
 		cnt = 0;
 		for (int i = 0; i < nSubBody[sub]; i++)
 		{
-			// subsystem joint acceleration
 			if (!flag_motion[sub](i))
 			{
 				ddqj[sub](i) = sol(idx + cnt);
@@ -1093,135 +1147,19 @@ void MBD_RecursiveII::EQM_WholeBody()
 	//}
 }
 
-void MBD_RecursiveII::EQM_BaseBody()
+Eigen::VectorXd MBD_RecursiveII::dynamics_analysis(double t_current, Eigen::VectorXd Y_ConvMethod)
 {
-	// summation of effective mass & force
-	Eigen::MatrixXd M_sum(6, 6); M_sum.setZero();
-	Eigen::VectorXd P_sum(6); P_sum.setZero();
-	for (int i = 1; i <= nSubsystem; i++)
-	{
-		M_sum = M_sum + Me[i];
-		P_sum = P_sum + Pe[i];
-	}
-
-	// solve base body EQM
-	Qj_hat[0][0] = Qj_hat[0][0] + Qj_RSDA_hat[0][0];
-	dYj_hat[0][0] = (Mj_hat[0][0] + M_sum).inverse() * (Qj_hat[0][0] + P_sum);
-
-#ifdef BASEBODY_FIX
-	dYj_hat[0][0].setZero();
-#endif
-
-#ifdef BASEBODY_TRANS_Z
-	dYj_hat[0][0].segment(0, 2).setZero();
-	dYj_hat[0][0].segment(3, 3).setZero();
-#endif
-}
-
-void MBD_RecursiveII::EQM_Subsystem(int sub)
-{
-	// solve subsystem EQM
-	Eigen::VectorXd sol;
-	int cnt = 0;
-	if (nSubBody[sub] - nJointMotion[sub] != 0)
-	{
-		sol = Mqq[sub].inverse() * (Pq[sub] - Myq[sub].transpose() * dYj_hat[0][0]);
-
-		for (int i = 0; i < nSubBody[sub]; i++)
-		{
-			if (!flag_motion[sub](i))
-			{
-				ddqj[sub](i) = sol(cnt);
-				cnt++;
-			}
-		}
-	}
-}
-
-void MBD_RecursiveII::jointReactionForce(int sub)
-{
-	int row = 0;
-	int col = 0;
-	std::vector<Eigen::VectorXd> KjBjddqj_sum(nSubBody[sub], Eigen::VectorXd::Zero(6));
-	for (int j = 1; j < loopList[sub].cols() - 1; j++)
-	{
-		for (int k = j + 1; k < loopList[sub].cols() - 1; k++)
-		{
-			for (int i = 0; i < loopList[sub].rows(); i++)
-			{
-				if ((loopList[sub](i, k) != -1) && ((i == 0) || (loopList[sub](i, k) != loopList[sub](i - 1, k))))
-				{
-					row = loopList[sub](i, j) - 1;
-					col = loopList[sub](i, k) - 1;
-
-					KjBjddqj_sum[row] = KjBjddqj_sum[row] + Kj[sub][col] * Bj[sub][col] * ddqj[sub](col);
-				}
-			}
-		}
-	}
-
-	Eigen::VectorXd Rji_hat(6);
-	for (int i = 0; i < nSubBody[sub]; i++)
-	{
-		if (flag_motion[sub](i))
-		{
-			Rji_hat = -Lj[sub][i] + Kj[sub][i] * dYj_hat[sub][i] + KjBjddqj_sum[i];
-			Rji[sub][i].segment(0, 3) = Rji_hat.segment(0, 3);
-			Rji[sub][i].segment(3, 3) = -skew(rj[sub][i]) * Rji_hat.segment(0, 3) + Rji_hat.segment(3, 3);
-
-			Rji[sub][i].segment(0, 3) = Aj[sub][i].transpose() * Rji[sub][i].segment(0, 3);
-			Rji[sub][i].segment(3, 3) = Aj[sub][i].transpose() * Rji[sub][i].segment(3, 3);
-		}
-		else
-		{
-			Rji[sub][i].setZero();
-		}
-	}
-}
-
-Eigen::VectorXd MBD_RecursiveII::VelAcc2dY()
-{
-	Eigen::VectorXd dY(13);
-
-	dY.segment(0, 3) = drj[0][0];
-	dY.segment(3, 4) = dp0;
-	dY.segment(7, 3) = ddrj[0][0];
-	dY.segment(10, 3) = dwj[0][0];
-
-	int idx = 13;
-	int cnt = 0;
-	for (int sub = 1; sub <= nSubsystem; sub++)
-	{
-		dY.conservativeResize(idx + 2 * (nSubBody[sub] - nJointMotion[sub]));
-		cnt = 0;
-		for (int i = 0; i < nSubBody[sub]; i++)
-		{
-			if (!flag_motion[sub](i))
-			{
-				dY(idx + cnt) = dqj[sub](i);
-				dY(idx + cnt + nSubBody[sub] - nJointMotion[sub]) = ddqj[sub](i);
-				cnt++;
-			}
-		}
-		idx = idx + 2 * (nSubBody[sub] - nJointMotion[sub]);
-	}
-
-	return dY;
-}
-
-Eigen::VectorXd MBD_RecursiveII::dynamics_analysis(double t_current, Eigen::VectorXd Y)
-{
-	// state vector
-	Y2PosVel(t_current, Y);
-
 	// base body analysis
+	Y2PosVel_BaseBody(Y_ConvMethod.segment(0, 13));
 	position_BaseBody();
 	velocity_BaseBody();
 	massforce_BaseBody();
 
 	// subsystem analysis
+	int cnt = 13;
 	for (int sub = 1; sub <= nSubsystem; sub++)
 	{
+		Y2PosVel_Subsystem(t_current, sub, Y_ConvMethod.segment(cnt, 2 * (nSubBody[sub] - nJointMotion[sub])));
 		position_Subsystem(sub);
 		velocity_Subsystem(sub);
 		massforce_Subsystem(sub);
@@ -1229,6 +1167,7 @@ Eigen::VectorXd MBD_RecursiveII::dynamics_analysis(double t_current, Eigen::Vect
 		{
 			effectiveTerm_Subsystem(sub);
 		}
+		cnt = cnt + 2 * (nSubBody[sub] - nJointMotion[sub]);
 	}
 
 	// EQM
@@ -1246,16 +1185,15 @@ Eigen::VectorXd MBD_RecursiveII::dynamics_analysis(double t_current, Eigen::Vect
 		break;
 	}
 
-	// acceleration and joint reaction force
-	acceleration_BaseBody();
+	// dot state 
+	cnt = 13;
+	Eigen::VectorXd dY = VelAcc2dY_BaseBody();
 	for (int sub = 1; sub <= nSubsystem; sub++)
 	{
-		acceleration_Subsystem(sub);
-		jointReactionForce(sub);
+		dY.conservativeResize(cnt + 2 * (nSubBody[sub] - nJointMotion[sub]));
+		dY.segment(cnt, 2 * (nSubBody[sub] - nJointMotion[sub])) = VelAcc2dY_Subsystem(sub);
+		cnt = cnt + 2 * (nSubBody[sub] - nJointMotion[sub]);
 	}
-	
-	// dot state vector
-	Eigen::VectorXd dY = VelAcc2dY();
 
 	return dY;
 }
@@ -1278,7 +1216,6 @@ OutputData MBD_RecursiveII::getOutputData()
 		outData.Subsystem.qj[sub] = qj[sub];
 		outData.Subsystem.dqj[sub] = dqj[sub];
 		outData.Subsystem.ddqj[sub] = ddqj[sub];
-		outData.Subsystem.Rji[sub] = Rji[sub];
 		outData.Subsystem.rjc[sub] = rjc[sub];
 		outData.Subsystem.pj[sub] = pj[sub];
 		outData.Subsystem.drjc[sub] = drjc[sub];

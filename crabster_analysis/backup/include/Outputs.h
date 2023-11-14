@@ -7,7 +7,7 @@ class Outputs
 {
 public:
 	void storeOutputData(double time_step, OutputData outData);
-	void csvWrite();
+	void csvWrite(std::string folder_path);
 
 private:
 	std::vector<OutputData> m_outData;

@@ -1,9 +1,10 @@
 #goal definition
 float64 simulation_time
 float64 integration_stepsize
+float64 datasave_stepsize
+float64 gravity
 std_msgs/String analysis_method
 std_msgs/String solver
-float64 gravity
 float64[3] gravity_axis
 float64[3] rotational_axis
 float64[3] translational_axis

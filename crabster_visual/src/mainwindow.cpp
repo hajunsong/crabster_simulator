@@ -6,17 +6,53 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent) : QMainWindow(par
 	ui->setupUi(this);
 
 	ros::init(argc, argv, "crabster_visual");
-	ros::NodeHandle nh;
 
 	connect(ui->btnLoad, SIGNAL(clicked()), this, SLOT(btnLoadClicked()));
 	connect(ui->btnModel, SIGNAL(clicked()), this, SLOT(btnModelClicked()));
 	connect(ui->btnRun, SIGNAL(clicked()), this, SLOT(btnRunClicked()));
+
+	ac = new actionlib::SimpleActionClient<crabster_msgs::CrabsterSimulationAction>("crabster_analysis_server", true);
+
+	if(ac->waitForServer())
+	{
+		ROS_INFO("connected robot action server");
+	}
+	else{
+		ROS_ERROR("robot action server error");
+	}
 }
 
 MainWindow::~MainWindow()
 {
 	delete ui;
 	delete rvizRobot;
+	delete ac;
+}
+
+void MainWindow::CrabsterPoseCB(const crabster_msgs::CrabsterPose &msg)
+{
+	// ROS_INFO("[CrabsterPoseCB] msg size : %ld", msg.pose.size());
+	// for(uint i = 0; i < msg.pose.size(); i++){
+	// 	std::cout << msg.pose[i] << "\t";
+	// }
+	// std::cout << std::endl;
+	
+
+}
+
+void MainWindow::CrabsterCompleteCB(const actionlib::SimpleClientGoalState &state, const crabster_msgs::CrabsterSimulationResultConstPtr &result)
+{
+	// ROS_INFO("Crabster Simulation Complete(%s)", result->complete == true ? "true" : "false");
+}
+
+void MainWindow::CrabsterFeedbackCB(const crabster_msgs::CrabsterSimulationFeedbackConstPtr &feedback)
+{
+	// ROS_INFO("Crabster Simulation feedback %f, %f", feedback->time_current, feedback->percent_complete);
+}
+
+void MainWindow::CrabsterActiveCB()
+{
+	ROS_INFO("Goal just went active");
 }
 
 void MainWindow::btnLoadClicked()
@@ -36,15 +72,23 @@ void MainWindow::btnLoadClicked()
 	if(ok){
 		try{
 			ui->txtEndTime->setText(QString::number(data["end_time"].asDouble()));
-			ui->txtGravity->setText(QString::number(data["g"].asDouble()));
-			ui->txtGravityAxis->setText(QString::fromStdString("[" 
-				+ std::to_string(data["gravity_axis"][0].asDouble()) + ", " 
-				+ std::to_string(data["gravity_axis"][1].asDouble()) + ", " 
-				+ std::to_string(data["gravity_axis"][2].asDouble()) + "]"));
 			ui->txtIntegStepSize->setText(QString::number(data["integration_stepSize"].asDouble()));
 			ui->txtSaveStepSize->setText(QString::number(data["dataSave_stepSize"].asDouble()));
-			ui->txtSolver->setText(QString::fromStdString(data["solver"].asString()));
+			ui->txtGravity->setText(QString::number(data["g"].asDouble()));
 			ui->txtAnalysisMethod->setText(QString::fromStdString(data["analysis_method"].asString()));
+			ui->txtSolver->setText(QString::fromStdString(data["solver"].asString()));
+
+			ui->txtGravityAxisX->setText(QString::number(data["gravity_axis"][0].asDouble()));
+			ui->txtGravityAxisY->setText(QString::number(data["gravity_axis"][1].asDouble()));
+			ui->txtGravityAxisZ->setText(QString::number(data["gravity_axis"][2].asDouble()));
+			
+			ui->txtRotationalAxisX->setText(QString::number(data["rotational_axis"][0].asDouble()));
+			ui->txtRotationalAxisY->setText(QString::number(data["rotational_axis"][1].asDouble()));
+			ui->txtRotationalAxisZ->setText(QString::number(data["rotational_axis"][2].asDouble()));
+			
+			ui->txtTranslationalAxisX->setText(QString::number(data["translational_axis"][0].asDouble()));
+			ui->txtTranslationalAxisY->setText(QString::number(data["translational_axis"][1].asDouble()));
+			ui->txtTranslationalAxisZ->setText(QString::number(data["translational_axis"][2].asDouble()));
 		}
 		catch (Json::Exception &e) {
 			ROS_INFO("%s", e.what());
@@ -181,7 +225,7 @@ void MainWindow::btnLoadClicked()
 	bool okChild, okParent;
 
 	try{
-		for(int sub_id = 1; sub_id <= 6; sub_id++){
+		for(int sub_id = 1; sub_id <= 1; sub_id++){
 			for(int body_id = 1; body_id <= 4; body_id++){
 				child_json = "Subsystem" + std::to_string(sub_id) + std::to_string(body_id) + ".json";
 				std::ifstream json_file_child(data_dir + child_json, std::ifstream::binary);
@@ -344,8 +388,6 @@ void MainWindow::btnModelClicked()
 	system("gnome-terminal -- sh -c \"roslaunch crabster_visual display.launch\"");
 	// system("roslaunch crabster_visual display.launch && exit");
 
-	std::cout << "=====================================================================================================================" << std::endl;
-
 	rvizRobot = new Rviz();
 	rvizRobot->initRvizRobotModel(ui->vlRobotModel);
 
@@ -354,5 +396,29 @@ void MainWindow::btnModelClicked()
 
 void MainWindow::btnRunClicked()
 {
+	goal.simulation_time = ui->txtEndTime->text().toDouble();
+	goal.integration_stepsize = ui->txtIntegStepSize->text().toDouble();
+	goal.datasave_stepsize = ui->txtSaveStepSize->text().toDouble();
+	goal.gravity = ui->txtGravity->text().toDouble();
+	goal.analysis_method.data = ui->txtAnalysisMethod->text().toStdString();
+	goal.solver.data = ui->txtSolver->text().toStdString();
+	goal.gravity_axis[0] = ui->txtGravityAxisX->text().toDouble();
+	goal.gravity_axis[1] = ui->txtGravityAxisY->text().toDouble();
+	goal.gravity_axis[2] = ui->txtGravityAxisZ->text().toDouble();
+	goal.rotational_axis[0] = ui->txtRotationalAxisX->text().toDouble();
+	goal.rotational_axis[1] = ui->txtRotationalAxisY->text().toDouble();
+	goal.rotational_axis[2] = ui->txtRotationalAxisZ->text().toDouble();
+	goal.translational_axis[0] = ui->txtTranslationalAxisX->text().toDouble();
+	goal.translational_axis[1] = ui->txtTranslationalAxisY->text().toDouble();
+	goal.translational_axis[2] = ui->txtTranslationalAxisZ->text().toDouble();
 
+	// ac->sendGoal(goal, &MainWindow::CrabsterCompleteCB, &MainWindow::CrabsterActiveCB, &MainWindow::CrabsterFeedbackCB);
+	ac->sendGoal(goal,
+        boost::bind(&MainWindow::CrabsterCompleteCB, this, _1, _2),
+        boost::bind(&MainWindow::CrabsterActiveCB, this),
+        boost::bind(&MainWindow::CrabsterFeedbackCB, this, _1));
+	ac->waitForResult();
+
+	subCrabsterPose = nh.subscribe("/crabster_pose", 1, &MainWindow::CrabsterPoseCB, this);
 }
+
