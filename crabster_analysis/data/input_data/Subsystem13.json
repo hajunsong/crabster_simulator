@@ -1,5 +1,5 @@
 {
-	"name" : "Subsystem13(FR_Pitch_Arm)",
+	"name" : "Subsystem13",
 	"subsystem id" : 1,
 	"joint id" : "revolute",
 	"parent id" : 2,

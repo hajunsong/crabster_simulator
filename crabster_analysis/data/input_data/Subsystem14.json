@@ -1,5 +1,5 @@
 {
-	"name" : "Subsystem14(FR_Leg)",
+	"name" : "Subsystem14",
 	"subsystem id" : 1,
 	"joint id" : "revolute",
 	"parent id" : 3,

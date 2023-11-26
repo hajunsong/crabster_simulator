@@ -1,0 +1,211 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="crabster">
+    <link name="world" />
+    <link name="BaseBody">
+        <inertial>
+            <origin xyz="-0.354345 0.000365 -0.054511" rpy="0.000644 0.000062 1.570881" />
+            <mass value="100.040817" />
+            <inertia ixx="37.154571" ixy="-0.000000" ixz="0.000000" iyy="52.546078" iyz="0.000000" izz="87.239257" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/BaseBody.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.8 0.8 0.8 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/BaseBody.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="world_to_BaseBody" type="prismatic">
+        <origin xyz="0.000000 0.000000 0.500000" rpy="0.000000 -0.000000 0.000000" />
+        <parent link="world" />
+        <child link="BaseBody" />
+        <axis xyz="0.0 0.0 1.0" />
+        <limit effort="10" lower="-5.0" upper="5.0" velocity="100" />
+    </joint>
+    <link name="Subsystem11">
+        <inertial>
+            <origin xyz="-0.000025 -0.004826 0.005438" rpy="0.000017 0.000646 1.597550" />
+            <mass value="10.281919" />
+            <inertia ixx="0.025810" ixy="0.000000" ixz="-0.000000" iyy="0.025875" iyz="0.000000" izz="0.031298" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/Subsystem11.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.8 0.1 0.1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/Subsystem11.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="BaseBody_to_Subsystem11" type="revolute">
+        <origin xyz="0.416200 -0.760100 -0.005500" rpy="0.000000 -0.000000 -0.785398" />
+        <parent link="BaseBody" />
+        <child link="Subsystem11" />
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" upper="3.14" effort="10" velocity="100" />
+    </joint>
+    <link name="Subsystem12">
+        <inertial>
+            <origin xyz="0.216360 -0.000124 -0.001763" rpy="-1.570230 0.015923 -3.141552" />
+            <mass value="10.085826" />
+            <inertia ixx="0.052195" ixy="0.000000" ixz="-0.000000" iyy="0.166548" iyz="0.000000" izz="0.185913" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/Subsystem12.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.1 0.8 0.1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/Subsystem12.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Subsystem11_to_Subsystem12" type="revolute">
+        <origin xyz="0.000000 0.000000 0.000000" rpy="-1.570804 -1.047193 0.000009" />
+        <parent link="Subsystem11" />
+        <child link="Subsystem12" />
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" upper="3.14" effort="10" velocity="100" />
+    </joint>
+    <link name="Subsystem13">
+        <inertial>
+            <origin xyz="-0.000199 0.003130 0.181480" rpy="1.527506 -1.549390 -1.518990" />
+            <mass value="10.017580" />
+            <inertia ixx="0.058985" ixy="-0.000000" ixz="-0.000000" iyy="0.127085" iyz="0.000000" izz="0.134936" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/Subsystem13.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.1 0.1 0.8 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/Subsystem13.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Subsystem12_to_Subsystem13" type="revolute">
+        <origin xyz="0.394588 -0.000121 -0.000617" rpy="-2.356194 -1.570791 -0.785394" />
+        <parent link="Subsystem12" />
+        <child link="Subsystem13" />
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" upper="3.14" effort="10" velocity="100" />
+    </joint>
+    <link name="Subsystem14">
+        <inertial>
+            <origin xyz="0.276408 0.382057 -0.007738" rpy="-1.556785 -0.045628 1.077894" />
+            <mass value="20.079610" />
+            <inertia ixx="0.132719" ixy="0.000000" ixz="0.000000" iyy="0.950656" iyz="0.000000" izz="1.015634" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/Subsystem14.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.1 0.1 0.1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://crabster_visual/meshes/Subsystem14.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Subsystem13_to_Subsystem14" type="revolute">
+        <origin xyz="-0.000090 0.000026 0.263276" rpy="-1.570800 -0.000003 -1.570793" />
+        <parent link="Subsystem13" />
+        <child link="Subsystem14" />
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" upper="3.14" effort="10" velocity="100" />
+    </joint>
+    <link name="contact_point" />
+    <joint name="Subsystem14_to_contact_point" type="fixed">
+        <origin xyz="0.476354 0.826908 0.003465" rpy="1.5708 -0.785398 -0.523598" />
+        <parent link="Subsystem14" />
+        <child link="contact_point" />
+    </joint>
+    <transmission name="trans_world_to_BaseBody">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="world_to_BaseBody">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="world_to_BaseBody_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_BaseBody_to_Subsystem11">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="BaseBody_to_Subsystem11">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="BaseBody_to_Subsystem11_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_Subsystem11_to_Subsystem12">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Subsystem11_to_Subsystem12">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Subsystem11_to_Subsystem12_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_Subsystem12_to_Subsystem13">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Subsystem12_to_Subsystem13">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Subsystem12_to_Subsystem13_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_Subsystem13_to_Subsystem14">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Subsystem13_to_Subsystem14">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Subsystem13_to_Subsystem14_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <gazebo>
+        <plugin name="gazebo_ros_control">
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+    </gazebo>
+</robot>
+

@@ -36,8 +36,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-	
-    ros::NodeHandle nh;
     
     Rviz *rvizRobot;
 

@@ -34,14 +34,16 @@
 			</geometry>
 		</collision>
 	</link>
-	<joint name="world_to_BaseBody" type="fixed">
+	<joint name="world_to_BaseBody" type="prismatic">
 		<origin
-			xyz="0.000000 0.000000 0.000000"
+			xyz="0.000000 0.000000 0.500000"
 			rpy="0.000000 -0.000000 0.000000"/>
 		<parent link="world"/>
 		<child link="BaseBody"/>
+		<axis xyz="0.0 0.0 1.0"/>
+		<limit effort="10" lower="-5.0" upper="5.0" velocity="100"/>
 	</joint>
-	<link name="Subsystem11(FR_Yaw_Motor)">
+	<link name="Subsystem11">
 		<inertial>
 			<origin
 				xyz="-0.000025 -0.004826 0.005438"
@@ -59,7 +61,7 @@
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://crabster_visual/meshes/Subsystem11(FR_Yaw_Motor).STL"/>
+				<mesh filename="package://crabster_visual/meshes/Subsystem11.STL"/>
 			</geometry>
 			<material name="">
 				<color rgba="0.8 0.1 0.1 1"/>
@@ -68,16 +70,16 @@
 		<collision>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://crabster_visual/meshes/Subsystem11(FR_Yaw_Motor).STL"/>
+				<mesh filename="package://crabster_visual/meshes/Subsystem11.STL"/>
 			</geometry>
 		</collision>
 	</link>
-	<joint name="BaseBody_to_Subsystem11(FR_Yaw_Motor)" type="revolute">
+	<joint name="BaseBody_to_Subsystem11" type="revolute">
 		<origin
 			xyz="0.416200 -0.760100 -0.005500"
 			rpy="0.000000 -0.000000 -0.785398"/>
 		<parent link="BaseBody"/>
-		<child link="Subsystem11(FR_Yaw_Motor)"/>
+		<child link="Subsystem11"/>
 		<axis xyz="0 0 1"/>
 		<limit
 			lower="-3.14"
@@ -85,7 +87,8 @@
 			effort="10"
 			velocity="100"/>
 	</joint>
-	<link name="Subsystem12(FR_Roll_Arm)">
+
+	<link name="Subsystem12">
 		<inertial>
 			<origin
 				xyz="0.216360 -0.000124 -0.001763"
@@ -103,7 +106,7 @@
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://crabster_visual/meshes/Subsystem12(FR_Roll_Arm).STL"/>
+				<mesh filename="package://crabster_visual/meshes/Subsystem12.STL"/>
 			</geometry>
 			<material name="">
 				<color rgba="0.1 0.8 0.1 1"/>
@@ -112,16 +115,16 @@
 		<collision>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://crabster_visual/meshes/Subsystem12(FR_Roll_Arm).STL"/>
+				<mesh filename="package://crabster_visual/meshes/Subsystem12.STL"/>
 			</geometry>
 		</collision>
 	</link>
-	<joint name="Subsystem11(FR_Yaw_Motor)_to_Subsystem12(FR_Roll_Arm)" type="revolute">
+	<joint name="Subsystem11_to_Subsystem12" type="revolute">
 		<origin
 			xyz="0.000000 0.000000 0.000000"
 			rpy="-1.570804 -1.047193 0.000009"/>
-		<parent link="Subsystem11(FR_Yaw_Motor)"/>
-		<child link="Subsystem12(FR_Roll_Arm)"/>
+		<parent link="Subsystem11"/>
+		<child link="Subsystem12"/>
 		<axis xyz="0 0 1"/>
 		<limit
 			lower="-3.14"
@@ -129,7 +132,8 @@
 			effort="10"
 			velocity="100"/>
 	</joint>
-	<link name="Subsystem13(FR_Pitch_Arm)">
+
+	<link name="Subsystem13">
 		<inertial>
 			<origin
 				xyz="-0.000199 0.003130 0.181480"
@@ -147,7 +151,7 @@
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://crabster_visual/meshes/Subsystem13(FR_Pitch_Arm).STL"/>
+				<mesh filename="package://crabster_visual/meshes/Subsystem13.STL"/>
 			</geometry>
 			<material name="">
 				<color rgba="0.1 0.1 0.8 1"/>
@@ -156,16 +160,16 @@
 		<collision>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://crabster_visual/meshes/Subsystem13(FR_Pitch_Arm).STL"/>
+				<mesh filename="package://crabster_visual/meshes/Subsystem13.STL"/>
 			</geometry>
 		</collision>
 	</link>
-	<joint name="Subsystem12(FR_Roll_Arm)_to_Subsystem13(FR_Pitch_Arm)" type="revolute">
+	<joint name="Subsystem12_to_Subsystem13" type="revolute">
 		<origin
 			xyz="0.394588 -0.000121 -0.000617"
 			rpy="-2.356194 -1.570791 -0.785394"/>
-		<parent link="Subsystem12(FR_Roll_Arm)"/>
-		<child link="Subsystem13(FR_Pitch_Arm)"/>
+		<parent link="Subsystem12"/>
+		<child link="Subsystem13"/>
 		<axis xyz="0 0 1"/>
 		<limit
 			lower="-3.14"
@@ -173,7 +177,8 @@
 			effort="10"
 			velocity="100"/>
 	</joint>
-	<link name="Subsystem14(FR_Leg)">
+
+	<link name="Subsystem14">
 		<inertial>
 			<origin
 				xyz="0.276408 0.382057 -0.007738"
@@ -191,7 +196,7 @@
 		<visual>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://crabster_visual/meshes/Subsystem14(FR_Leg).STL"/>
+				<mesh filename="package://crabster_visual/meshes/Subsystem14.STL"/>
 			</geometry>
 			<material name="">
 				<color rgba="0.1 0.1 0.1 1"/>
@@ -200,16 +205,16 @@
 		<collision>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="package://crabster_visual/meshes/Subsystem14(FR_Leg).STL"/>
+				<mesh filename="package://crabster_visual/meshes/Subsystem14.STL"/>
 			</geometry>
 		</collision>
 	</link>
-	<joint name="Subsystem13(FR_Pitch_Arm)_to_Subsystem14(FR_Leg)" type="revolute">
+	<joint name="Subsystem13_to_Subsystem14" type="revolute">
 		<origin
 			xyz="-0.000090 0.000026 0.263276"
 			rpy="-1.570800 -0.000003 -1.570793"/>
-		<parent link="Subsystem13(FR_Pitch_Arm)"/>
-		<child link="Subsystem14(FR_Leg)"/>
+		<parent link="Subsystem13"/>
+		<child link="Subsystem14"/>
 		<axis xyz="0 0 1"/>
 		<limit
 			lower="-3.14"
@@ -217,4 +222,14 @@
 			effort="10"
 			velocity="100"/>
 	</joint>
+
+	<link name="contact_point"></link>
+
+	<joint name="Subsystem14_to_contact_point" type="fixed">
+	<origin
+		xyz="0.476354 0.826908 0.003465"
+		rpy="1.5708 -0.785398 -0.523598"/>
+	<parent link="Subsystem14"/>
+	<child link="contact_point"/>
+</joint>
 </robot>

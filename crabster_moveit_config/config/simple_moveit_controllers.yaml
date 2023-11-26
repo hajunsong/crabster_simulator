@@ -1,0 +1,16 @@
+controller_list:
+  - name: arm_FR_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - BaseBody_to_Subsystem11
+      - Subsystem11_to_Subsystem12
+      - Subsystem12_to_Subsystem13
+      - Subsystem13_to_Subsystem14
+  - name: base_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - world_to_BaseBody

@@ -6,6 +6,8 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent) : QMainWindow(par
 	ui->setupUi(this);
 
 	ros::init(argc, argv, "crabster_visual");
+	
+    ros::NodeHandle nh;
 
 	connect(ui->btnLoad, SIGNAL(clicked()), this, SLOT(btnLoadClicked()));
 	connect(ui->btnModel, SIGNAL(clicked()), this, SLOT(btnModelClicked()));
@@ -13,13 +15,13 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent) : QMainWindow(par
 
 	ac = new actionlib::SimpleActionClient<crabster_msgs::CrabsterSimulationAction>("crabster_analysis_server", true);
 
-	if(ac->waitForServer())
-	{
-		ROS_INFO("connected robot action server");
-	}
-	else{
-		ROS_ERROR("robot action server error");
-	}
+	// if(ac->waitForServer())
+	// {
+	// 	ROS_INFO("connected robot action server");
+	// }
+	// else{
+	// 	ROS_ERROR("robot action server error");
+	// }
 }
 
 MainWindow::~MainWindow()
@@ -170,7 +172,7 @@ void MainWindow::btnLoadClicked()
 
 			urdf += "\t</link>\n";
 
-			urdf += "\t<joint name=\"world_to_" + dataBase["name"].asString() + "\" type=\"fixed\">\n";
+			urdf += "\t<joint name=\"world_to_" + dataBase["name"].asString() + "\" type=\"prismatic\">\n";
 			urdf += "\t\t<origin\n";
 			urdf += "\t\t\txyz=\"" 
 				+ std::to_string(dataBase["r0"][0].asDouble()) + " " 
@@ -208,8 +210,25 @@ void MainWindow::btnLoadClicked()
 			urdf += "\t\t\trpy=\"" + std::to_string(rpy(0)) + " " + std::to_string(rpy(1)) + " " + std::to_string(rpy(2)) + "\"/>\n";
 			urdf += "\t\t<parent link=\"world\"/>\n";
 			urdf += "\t\t<child link=\"" + dataBase["name"].asString() + "\"/>\n";
-			urdf += "\t</joint>\n";
 
+			urdf += "\t\t<axis xyz=\"0.0 0.0 1.0\"/>\n";
+			urdf += "\t\t<limit effort=\"10\" lower=\"-5.0\" upper=\"5.0\" velocity=\"100\"/>\n";
+
+			// urdf += "\t\t<calibration rising=\"0.0\"/>\n";
+			// urdf += "\t\t<dynamics damping=\"0.0\" friction=\"0.0\"/>\n";
+			// urdf += "\t\t<limit effort=\"30\" velocity=\"1.0\" lower=\"-5.0\" upper=\"5.0\"/>\n";
+			// urdf += "\t\t<safety_controller k_velocity=\"10\" k_position=\"15\" soft_lower_limit=\"-2.0\" soft_upper_limit=\"0.5\"/>\n";
+
+			// <joint name="s1" type="prismatic">
+			// 	<origin rpy="0.0 0.0 0.0" xyz="0.0 -0.0962 0.0" />
+			// 	<parent link="gripper_body" />
+			// 	<child link="gripper_tool1" />
+			// 	<axis xyz="1.0 0.0 0.0" />
+			// 	<limit effort="10" lower="0.0" upper="0.04" velocity="100" />
+			// 	<dynamics damping="50" friction="1" />
+			// </joint>
+
+			urdf += "\t</joint>\n";
 		} 
 		catch (Json::Exception &e) {
 			ROS_INFO("%s", e.what());
@@ -354,8 +373,34 @@ void MainWindow::btnLoadClicked()
 				urdf += "\t\t\tupper=\"3.14\"\n";
 				urdf += "\t\t\teffort=\"10\"\n";
 				urdf += "\t\t\tvelocity=\"100\"/>\n";
-				urdf += "\t</joint>\n";
+				urdf += "\t</joint>\n\n";
 			}
+
+			urdf += "\t<link name=\"contact_point\"></link>\n\n";
+			urdf += "\t<joint name=\"" + dataChild["name"].asString() + "_to_contact_point\" type=\"fixed\">\n";
+
+			urdf += "\t<origin\n";
+			urdf += "\t\txyz=\"" 
+				+ std::to_string(dataChild["sjcp"][0].asDouble()) + " " 
+				+ std::to_string(dataChild["sjcp"][1].asDouble()) + " " 
+				+ std::to_string(dataChild["sjcp"][2].asDouble()) + "\"\n";
+			urdf += "\t\trpy=\"1.5708 -0.785398 -0.523598\"/>\n";
+			urdf += "\t<parent link=\"" + dataChild["name"].asString() + "\"/>\n";
+			urdf += "\t<child link=\"contact_point\"/>\n";
+
+			urdf += "</joint>\n";
+
+
+			// urdf += "\t<joint name=\"" + dataParent["name"].asString() + "_to_" + dataChild["name"].asString() + "\" type=\"revolute\">\n";
+
+			// <link name="EndPoint"/>
+			// <joint name="Subsystem14_to_EndPoint" type="fixed">
+			// 	<origin
+			// 		xyz="0.476354 0.826908 0.00346482"
+			// 		rpy="1.5708 -0.785398 -0.523598"/>
+			// 	<parent link="Subsystem14"/>
+			// 	<child link="EndPoint"/>
+			// </joint>
 		}
 	} 
 	catch (Json::Exception &e) {
@@ -419,6 +464,6 @@ void MainWindow::btnRunClicked()
         boost::bind(&MainWindow::CrabsterFeedbackCB, this, _1));
 	ac->waitForResult();
 
-	subCrabsterPose = nh.subscribe("/crabster_pose", 1, &MainWindow::CrabsterPoseCB, this);
+	// subCrabsterPose = nh.subscribe("/crabster_pose", 1, &MainWindow::CrabsterPoseCB, this);
 }
 

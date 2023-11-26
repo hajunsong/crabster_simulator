@@ -1,5 +1,5 @@
 {
-	"name" : "Subsystem12(FR_Roll_Arm)",
+	"name" : "Subsystem12",
 	"subsystem id" : 1,
 	"joint id" : "revolute",
 	"parent id" : 1,
