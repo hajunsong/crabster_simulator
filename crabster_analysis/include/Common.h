@@ -10,7 +10,7 @@
 
 // base body constraint
 // When base body constraints are needed, just active define function
-#define BASEBODY_FIX
+// #define BASEBODY_FIX
 #define BASEBODY_TRANS_Z
 
 // analysis method

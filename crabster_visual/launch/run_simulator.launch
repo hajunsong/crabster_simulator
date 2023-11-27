@@ -1,3 +1,5 @@
 <launch>
+    <include file="$(find crabster_analysis)/launch/analysis_node.launch"/>
+    
     <node pkg="crabster_visual" type="crabster_visual" name="crabster_visual_node" output="screen" />
 </launch>

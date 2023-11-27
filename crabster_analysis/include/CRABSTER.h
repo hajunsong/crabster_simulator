@@ -10,6 +10,8 @@
 #include <crabster_msgs/CrabsterSimulationAction.h>
 #include <crabster_msgs/CrabsterPose.h>
 
+#include <sensor_msgs/JointState.h>
+
 #include <stdlib.h>
 #include <pthread.h>
 
@@ -33,7 +35,6 @@ public:
 
     static void *run_single_func(void *arg);
 
-
 private:
     // json file direction
 	std::string path;
@@ -49,4 +50,7 @@ private:
 
     double t_end, integrationStep, dataSaveStep;
     int solver, dataSave_count;;
+
+    ros::Publisher pub_joint_command;
+	sensor_msgs::JointState msg_joint;
 };

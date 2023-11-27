@@ -13,6 +13,38 @@ Crabster::Crabster(std::string name, ros::NodeHandle nh) : as(nh, name, boost::b
 	m_outputs = new Outputs();
 
 	as.start();
+
+	pub_joint_command = nh.advertise<sensor_msgs::JointState>("joint_states", 1);
+
+	msg_joint.name.push_back("world_to_BaseBody");
+	msg_joint.name.push_back("BaseBody_to_Subsystem11");
+	msg_joint.name.push_back("Subsystem11_to_Subsystem12");
+	msg_joint.name.push_back("Subsystem12_to_Subsystem13");
+	msg_joint.name.push_back("Subsystem13_to_Subsystem14");
+
+	ros::Rate loop_rate(10);
+
+	unsigned int n = msg_joint.name.size();
+	msg_joint.position.resize(n);
+	msg_joint.velocity.resize(n);
+	msg_joint.effort.resize(n);
+
+	for (unsigned int i = 0; i < n; i++)
+	{
+		msg_joint.velocity[i] = 0;
+		msg_joint.effort[i] = 0;
+		msg_joint.position[i] = 0;
+	}
+
+	while(ros::ok())
+	{
+		loop_rate.sleep();
+		ros::spinOnce();
+
+		msg_joint.header.stamp = ros::Time::now();
+
+		pub_joint_command.publish(msg_joint);
+	}
 }
 
 Crabster::~Crabster()
@@ -82,12 +114,13 @@ void Crabster::executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &go
 	dataSave_count = 0;
 	Eigen::VectorXd dY(Y.size());
 
-	ros::Rate loop_rate(100);
+	ros::Rate loop_rate(10);
 	bool success = true;
 
 	while(ros::ok())
 	{
 		loop_rate.sleep();
+		ros::spinOnce();
 		// ROS_INFO("time : %f", t_current);
 
 		if (as.isPreemptRequested() || !ros::ok())
@@ -124,6 +157,16 @@ void Crabster::executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &go
 
 		Y = integData.Y_next;
 		t_current = integData.t_next;
+
+		msg_joint.header.stamp = ros::Time::now();
+
+		msg_joint.position[0] = Y(2) - 0.5;
+		msg_joint.position[1] = Y(7);
+		msg_joint.position[2] = Y(8);
+		msg_joint.position[3] = Y(9);
+		msg_joint.position[4] = Y(10);
+
+		// pub_joint_command.publish(msg_joint);
 
 		if (std::abs(t_current - (t_end + integrationStep)) <= eps)
 		{

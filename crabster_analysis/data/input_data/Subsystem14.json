@@ -30,7 +30,7 @@
 	"qj_ini_RSDA" : 0.0,
 	"k_RSDA" : 1000.0,
 	"c_RSDA" : 300.0,
-	"pen_z_ref" : -0.5,
+	"pen_z_ref" : -0.0,
 	"k_contact" : 600000.0,
 	"c_contact" : 1500.0
 }

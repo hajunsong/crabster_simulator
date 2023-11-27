@@ -6,22 +6,22 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent) : QMainWindow(par
 	ui->setupUi(this);
 
 	ros::init(argc, argv, "crabster_visual");
+
+	ros::MultiThreadedSpinner spinner(4); // Use 4 threads
 	
-    ros::NodeHandle nh;
+    nh = new ros::NodeHandle();
 
 	connect(ui->btnLoad, SIGNAL(clicked()), this, SLOT(btnLoadClicked()));
 	connect(ui->btnModel, SIGNAL(clicked()), this, SLOT(btnModelClicked()));
 	connect(ui->btnRun, SIGNAL(clicked()), this, SLOT(btnRunClicked()));
 
+	subCrabsterPose = nh->subscribe("/crabster_pose", 1, &MainWindow::CrabsterPoseCB, this);
+
 	ac = new actionlib::SimpleActionClient<crabster_msgs::CrabsterSimulationAction>("crabster_analysis_server", true);
 
-	// if(ac->waitForServer())
-	// {
-	// 	ROS_INFO("connected robot action server");
-	// }
-	// else{
-	// 	ROS_ERROR("robot action server error");
-	// }
+	ac->waitForServer();
+
+	ui->pbSim->setValue(0);
 }
 
 MainWindow::~MainWindow()
@@ -29,6 +29,7 @@ MainWindow::~MainWindow()
 	delete ui;
 	delete rvizRobot;
 	delete ac;
+	delete nh;
 }
 
 void MainWindow::CrabsterPoseCB(const crabster_msgs::CrabsterPose &msg)
@@ -38,18 +39,21 @@ void MainWindow::CrabsterPoseCB(const crabster_msgs::CrabsterPose &msg)
 	// 	std::cout << msg.pose[i] << "\t";
 	// }
 	// std::cout << std::endl;
-	
-
 }
 
 void MainWindow::CrabsterCompleteCB(const actionlib::SimpleClientGoalState &state, const crabster_msgs::CrabsterSimulationResultConstPtr &result)
 {
 	// ROS_INFO("Crabster Simulation Complete(%s)", result->complete == true ? "true" : "false");
+	
+	ui->btnRun->setEnabled(true);
+
+	ui->gbSimProgress->setEnabled(false);
 }
 
 void MainWindow::CrabsterFeedbackCB(const crabster_msgs::CrabsterSimulationFeedbackConstPtr &feedback)
 {
 	// ROS_INFO("Crabster Simulation feedback %f, %f", feedback->time_current, feedback->percent_complete);
+	ui->pbSim->setValue((int)feedback->percent_complete);
 }
 
 void MainWindow::CrabsterActiveCB()
@@ -431,7 +435,6 @@ void MainWindow::btnLoadClicked()
 void MainWindow::btnModelClicked()
 {
 	system("gnome-terminal -- sh -c \"roslaunch crabster_visual display.launch\"");
-	// system("roslaunch crabster_visual display.launch && exit");
 
 	rvizRobot = new Rviz();
 	rvizRobot->initRvizRobotModel(ui->vlRobotModel);
@@ -457,13 +460,13 @@ void MainWindow::btnRunClicked()
 	goal.translational_axis[1] = ui->txtTranslationalAxisY->text().toDouble();
 	goal.translational_axis[2] = ui->txtTranslationalAxisZ->text().toDouble();
 
-	// ac->sendGoal(goal, &MainWindow::CrabsterCompleteCB, &MainWindow::CrabsterActiveCB, &MainWindow::CrabsterFeedbackCB);
 	ac->sendGoal(goal,
         boost::bind(&MainWindow::CrabsterCompleteCB, this, _1, _2),
         boost::bind(&MainWindow::CrabsterActiveCB, this),
         boost::bind(&MainWindow::CrabsterFeedbackCB, this, _1));
-	ac->waitForResult();
 
-	// subCrabsterPose = nh.subscribe("/crabster_pose", 1, &MainWindow::CrabsterPoseCB, this);
+	ui->btnRun->setEnabled(false);
+
+	ui->gbSimProgress->setEnabled(true);
 }
 

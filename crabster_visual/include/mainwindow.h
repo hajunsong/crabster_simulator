@@ -24,6 +24,8 @@
 #include <actionlib/client/simple_action_client.h>
 #include <crabster_msgs/CrabsterSimulationAction.h>
 
+#include <sensor_msgs/JointState.h>
+
 namespace Ui { class MainWindow; }
 
 class MainWindow : public QMainWindow
@@ -38,6 +40,8 @@ private:
     Ui::MainWindow *ui;
     
     Rviz *rvizRobot;
+
+    ros::NodeHandle *nh;
 
     crabster_msgs::CrabsterPose crabsterPose;
 
