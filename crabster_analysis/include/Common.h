@@ -51,6 +51,9 @@ extern Eigen::VectorXd dY;
 // current time stamp
 extern double t_current;
 
+// leg contact point
+extern std::vector<double> rjf;
+
 // boolean vector
 typedef Eigen::Array<bool, Eigen::Dynamic, 1> ArrayXb;
 

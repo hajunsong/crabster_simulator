@@ -18,7 +18,7 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent) : QMainWindow(par
 	subCrabsterPose = nh->subscribe("/crabster_pose", 1, &MainWindow::CrabsterPoseCB, this);
 
 	ac = new actionlib::SimpleActionClient<crabster_msgs::CrabsterSimulationAction>("crabster_analysis_server", true);
-
+	
 	ac->waitForServer();
 
 	ui->pbSim->setValue(0);
@@ -248,7 +248,7 @@ void MainWindow::btnLoadClicked()
 	bool okChild, okParent;
 
 	try{
-		for(int sub_id = 1; sub_id <= 1; sub_id++){
+		for(int sub_id = 1; sub_id <= 6; sub_id++){
 			for(int body_id = 1; body_id <= 4; body_id++){
 				child_json = "Subsystem" + std::to_string(sub_id) + std::to_string(body_id) + ".json";
 				std::ifstream json_file_child(data_dir + child_json, std::ifstream::binary);
@@ -380,20 +380,19 @@ void MainWindow::btnLoadClicked()
 				urdf += "\t</joint>\n\n";
 			}
 
-			urdf += "\t<link name=\"contact_point\"></link>\n\n";
-			urdf += "\t<joint name=\"" + dataChild["name"].asString() + "_to_contact_point\" type=\"fixed\">\n";
+			// urdf += "\t<link name=\"contact_point\"" + dataChild["name"].asString() + "></link>\n\n";
+			// urdf += "\t<joint name=\"" + dataChild["name"].asString() + "_to_contact_point\" type=\"fixed\">\n";
 
-			urdf += "\t<origin\n";
-			urdf += "\t\txyz=\"" 
-				+ std::to_string(dataChild["sjcp"][0].asDouble()) + " " 
-				+ std::to_string(dataChild["sjcp"][1].asDouble()) + " " 
-				+ std::to_string(dataChild["sjcp"][2].asDouble()) + "\"\n";
-			urdf += "\t\trpy=\"1.5708 -0.785398 -0.523598\"/>\n";
-			urdf += "\t<parent link=\"" + dataChild["name"].asString() + "\"/>\n";
-			urdf += "\t<child link=\"contact_point\"/>\n";
+			// urdf += "\t<origin\n";
+			// urdf += "\t\txyz=\"" 
+			// 	+ std::to_string(dataChild["sjcp"][0].asDouble()) + " " 
+			// 	+ std::to_string(dataChild["sjcp"][1].asDouble()) + " " 
+			// 	+ std::to_string(dataChild["sjcp"][2].asDouble()) + "\"\n";
+			// urdf += "\t\trpy=\"1.5708 -0.785398 -0.523598\"/>\n";
+			// urdf += "\t<parent link=\"" + dataChild["name"].asString() + "\"/>\n";
+			// urdf += "\t<child link=\"contact_point\"" + dataChild["name"].asString() + "/>\n";
 
-			urdf += "</joint>\n";
-
+			// urdf += "</joint>\n";
 
 			// urdf += "\t<joint name=\"" + dataParent["name"].asString() + "_to_" + dataChild["name"].asString() + "\" type=\"revolute\">\n";
 

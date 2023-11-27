@@ -1,5 +1,5 @@
 {
-	"name" : "Subsystem12",
+	"name" : "Subsystem12(FR_Roll_Arm)",
 	"subsystem id" : 1,
 	"joint id" : "revolute",
 	"parent id" : 1,
@@ -29,7 +29,7 @@
 	],
 	"qj_ini_RSDA" : 0.0,
 	"k_RSDA" : 10000.0,
-	"c_RSDA" : 400.0,
+	"c_RSDA" : 200.0,
 	"pen_z_ref" : null,
 	"k_contact" : null,
 	"c_contact" : null

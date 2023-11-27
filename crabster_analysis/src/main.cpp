@@ -21,6 +21,9 @@ Eigen::VectorXd Y, dY;
 
 // current time stamp
 double t_current;
+
+// leg contact point
+std::vector<double> rjf;
 /* ============= global values =================================================== */
 
 int main(int argc, char** argv)
@@ -36,12 +39,19 @@ int main(int argc, char** argv)
     ros::Rate loop_rate(100);
 
     // crabster.run_single_init();
+    // rjf.clear();
 
     while(ros::ok())
     {
+        // crabster.run_single();
+
         for(uint i = 0; i < Y.size(); i++){
             msg.pose.push_back(Y(i));
         }
+
+        // for(uint i = 0; i < 18; i++){
+        //     msg.pose.push_back(rjf[i]);
+        // }
 
         pubCrabsterPose.publish(msg);
 

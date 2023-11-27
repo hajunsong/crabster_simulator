@@ -1,7 +1,7 @@
 {
 	"name" : "Simulation_Parameter",
 	"start_time" : 0.0,
-	"end_time" : 2.0,
+	"end_time" : 1.0,
 	"integration_stepSize" : 0.005,
 	"dataSave_stepSize" : 0.005,
 	"g" : 9.80665,

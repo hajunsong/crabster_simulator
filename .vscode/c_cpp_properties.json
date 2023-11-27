@@ -6,13 +6,10 @@
                 "limitSymbolsToIncludedHeaders": false
             },
             "includePath": [
-                "/home/keti/Project/KRISO/CRABSTER/ros_ws/devel/include/**",
                 "/opt/ros/noetic/include/**",
-                "/home/keti/Project/KRISO/CRABSTER/ros_ws/src/crabster_simulator/crabster_analysis/include/**",
-                "/home/keti/Project/KRISO/CRABSTER/ros_ws/src/crabster_simulator/crabster_visual/include/**",
-                "/home/keti/Project/KRISO/CRABSTER/ros_ws/src/kriso_rover_uw3/rover_uw3/include/**",
                 "/usr/include/**",
-                "/home/keti/Project/KRISO/CRABSTER/ros_ws/build/crabster_simulator/crabster_visual"
+                "/mnt/c/Users/keti-hajun/Desktop/KRISO/ros_ws/src/crabster_simulator/crabster_analysis/include",
+                "/mnt/c/Users/keti-hajun/Desktop/KRISO/ros_ws/build/crabster_simulator/crabster_visual"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",

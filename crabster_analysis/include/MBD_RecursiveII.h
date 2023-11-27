@@ -23,6 +23,8 @@ public:
 
 	OutputData getOutputData();
 
+	std::map<int, std::vector<Eigen::Vector3d>> rjf;
+
 private:
 	Applied_Force* m_force;
 	Joint_Motrion* m_motion;
@@ -70,7 +72,7 @@ private:
 	std::map<int, std::vector<Eigen::Vector3d>> rhoj;
 	std::map<int, std::vector<Eigen::Vector3d>> rj;
 	std::map<int, std::vector<Eigen::Vector3d>> rjc;
-	std::map<int, std::vector<Eigen::Vector3d>> rjf;
+	// std::map<int, std::vector<Eigen::Vector3d>> rjf;
 	std::map<int, std::vector<Eigen::Vector3d>> drj;
 	std::map<int, std::vector<Eigen::Vector3d>> drjc;
 	std::map<int, std::vector<Eigen::Vector3d>> drjf;

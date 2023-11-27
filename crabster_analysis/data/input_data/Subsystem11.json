@@ -1,5 +1,5 @@
 {
-	"name" : "Subsystem11",
+	"name" : "Subsystem11(FR_Yaw_Motor)",
 	"subsystem id" : 1,
 	"joint id" : "revolute",
 	"parent id" : 0,
