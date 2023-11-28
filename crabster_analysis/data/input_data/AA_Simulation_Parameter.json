@@ -6,7 +6,7 @@
 	"dataSave_stepSize" : 0.01,
 	"g" : 9.80665,
 	"analysis_method" : "Subsystem",
-	"solver" : "RK4",
+	"solver" : "AB3",
 	"gravity_axis" : [0.0, 0.0, -1.0],
 	"rotational_axis" : [0.0, 0.0, 1.0],
 	"translational_axis" : [0.0, 0.0, 1.0]

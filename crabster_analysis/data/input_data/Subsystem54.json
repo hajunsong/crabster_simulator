@@ -5,7 +5,7 @@
 	"parent id" : 3,
 	"child id" : 4,
 	"flag contact" : true,
-	"flag motion" : false,
+	"flag motion" : true,
 	"qj" : 0.0,
 	"Cij" : [
 		[-6.12323399573677e-17, 6.12323399573677e-17, 1.0],

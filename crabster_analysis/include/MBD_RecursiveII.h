@@ -24,10 +24,11 @@ public:
 	OutputData getOutputData();
 
 	std::map<int, std::vector<Eigen::Vector3d>> rjf;
+	std::map<int, ArrayXb> flag_motion;
+	Joint_Motrion* m_motion;
 
 private:
 	Applied_Force* m_force;
-	Joint_Motrion* m_motion;
 
 	// joint type
 	std::map<int, Eigen::VectorXi> jointType;
@@ -41,7 +42,6 @@ private:
 
 	// check contact & motion
 	std::map<int, ArrayXb> flag_contact;
-	std::map<int, ArrayXb> flag_motion;
 
 	// constant value
 	std::map<int, std::vector<Eigen::Vector3d>> sijp;

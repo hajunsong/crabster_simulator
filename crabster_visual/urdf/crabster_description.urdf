@@ -82,9 +82,9 @@
 		<child link="Subsystem11(FR_Yaw_Motor)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -127,9 +127,9 @@
 		<child link="Subsystem12(FR_Roll_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -172,9 +172,9 @@
 		<child link="Subsystem13(FR_Pitch_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -217,9 +217,9 @@
 		<child link="Subsystem14(FR_Leg)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -262,9 +262,9 @@
 		<child link="Subsystem21(MR_Yaw_Motor)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -307,9 +307,9 @@
 		<child link="Subsystem22(MR_Roll_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -352,9 +352,9 @@
 		<child link="Subsystem23(MR_Pitch_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -397,9 +397,9 @@
 		<child link="Subsystem24(MR_Leg)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -442,9 +442,9 @@
 		<child link="Subsystem31(RR_Yaw_Motor)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -487,9 +487,9 @@
 		<child link="Subsystem32(RR_Roll_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -532,9 +532,9 @@
 		<child link="Subsystem33(RR_Pitch_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -577,9 +577,9 @@
 		<child link="Subsystem34(RR_Leg)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -622,9 +622,9 @@
 		<child link="Subsystem41(FL_Yaw_Motor)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -667,9 +667,9 @@
 		<child link="Subsystem42(FL_Roll_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -712,9 +712,9 @@
 		<child link="Subsystem43(FL_Pitch_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -757,9 +757,9 @@
 		<child link="Subsystem44(FL_Leg)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -802,9 +802,9 @@
 		<child link="Subsystem51(ML_Yaw_Motor)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -847,9 +847,9 @@
 		<child link="Subsystem52(ML_Roll_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -892,9 +892,9 @@
 		<child link="Subsystem53(ML_Pitch_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -937,9 +937,9 @@
 		<child link="Subsystem54(ML_Leg)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -982,9 +982,9 @@
 		<child link="Subsystem61(RL_Yaw_Motor)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -1027,9 +1027,9 @@
 		<child link="Subsystem62(RL_Roll_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -1072,9 +1072,9 @@
 		<child link="Subsystem63(RL_Pitch_Arm)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 
@@ -1117,9 +1117,9 @@
 		<child link="Subsystem64(RL_Leg)"/>
 		<axis xyz="0 0 1"/>
 		<limit
-			lower="-3.14"
-			upper="3.14"
-			effort="10"
+			lower="-6.28"
+			upper="6.28"
+			effort="100"
 			velocity="100"/>
 	</joint>
 

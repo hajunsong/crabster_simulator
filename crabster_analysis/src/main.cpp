@@ -24,6 +24,8 @@ double t_current;
 
 // leg contact point
 std::vector<double> rjf, road_h;
+
+sensor_msgs::JointState msg_joint;
 /* ============= global values =================================================== */
 
 void funcSub_foot_contact_z(const std_msgs::Float64MultiArray::ConstPtr &input)
@@ -33,14 +35,12 @@ void funcSub_foot_contact_z(const std_msgs::Float64MultiArray::ConstPtr &input)
         // std::cout<< input->data[0] <<" / " << input->data[1] <<" / " << input->data[2] <<" / " << input->data[3] <<" / " << input->data[4] <<" / " << input->data[5] <<" / " << std::endl;
         road_h.clear();
         for(uint i = 0; i < 6; i++){
-            road_h.push_back(input->data[i]);
+            road_h.push_back(input->data[i]*0 - 10);
             // std::cout << road_h[i] << " / ";
         }
         // std::cout << std::endl;
     }
 }
-    
-sensor_msgs::JointState msg_joint;
 
 int main(int argc, char** argv)
 {
@@ -60,8 +60,13 @@ int main(int argc, char** argv)
     ros::Subscriber sub_foot_contact_z;
     sub_foot_contact_z = nh.subscribe<std_msgs::Float64MultiArray>("crabster/foot/contact_z", 6, &funcSub_foot_contact_z);
 
-    // if(standalone)
-    //     crabster.run_single_init();
+	bool standalone;
+	nh.getParam("standalone", standalone);
+	ROS_INFO("standalone : %d", (int)standalone);
+
+    if(standalone)
+        crabster.run_single_init();
+
     rjf.clear();
     road_h.clear();
     road_h.assign(6, -10);
@@ -116,37 +121,16 @@ int main(int argc, char** argv)
 
     while(ros::ok())
     {
-        // std::cout << Y.size() << std::endl;
+		if(standalone)
+			crabster.run_single();
+
         for(uint i = 0; i < Y.size(); i++){
             msg.pose.push_back(Y(i));
         }
         pubCrabsterPose.publish(msg);
         msg.pose.clear();
 
-		if(Y.size() > 0){
-			msg_joint.position[0] = Y(2) + 0.5;
-			for(unsigned int i = 1; i <= 4; i++){
-				msg_joint.position[i] = Y(i + 12);
-			}
-			for(unsigned int i = 5; i <= 8; i++){
-				msg_joint.position[i] = Y(i + 12 + 4);
-			}
-			for(unsigned int i = 9; i <= 12; i++){
-				msg_joint.position[i] = Y(i + 12 + 8);
-			}
-			for(unsigned int i = 13; i <= 16; i++){
-				msg_joint.position[i] = Y(i + 12 + 12);
-			}
-			for(unsigned int i = 17; i <= 20; i++){
-				msg_joint.position[i] = Y(i + 12 + 16);
-			}
-			for(unsigned int i = 21; i <= 24; i++){
-				msg_joint.position[i] = Y(i + 12 + 20);
-			}
-		}
-
 		msg_joint.header.stamp = ros::Time::now();
-
 		pub_joint_command.publish(msg_joint);
 
         array_contact_req.data.clear();

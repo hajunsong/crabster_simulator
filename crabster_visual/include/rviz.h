@@ -17,7 +17,7 @@ private:
     rviz::VisualizationManager  *m_RvizManager;
     rviz::RenderPanel           *m_RvizRenderPanel;
 
-    // rviz::Display               *m_RvizGrid;
+    rviz::Display               *m_RvizGrid;
     rviz::Display               *m_RvizSetFixedFrame;
     rviz::Display               *m_RvizRobotModel;
     rviz::Display               *m_RvizPointCloud;

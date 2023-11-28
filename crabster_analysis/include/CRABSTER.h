@@ -37,8 +37,6 @@ public:
     void run_single();
     void executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &goal);
 
-    static void *run_single_func(void *arg);
-
 private:
     // json file direction
 	std::string path;

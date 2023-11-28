@@ -373,9 +373,9 @@ void MainWindow::btnLoadClicked()
 				urdf += "\t\t<child link=\"" + dataChild["name"].asString() + "\"/>\n";
 				urdf += "\t\t<axis xyz=\"0 0 1\"/>\n";
 				urdf += "\t\t<limit\n";
-				urdf += "\t\t\tlower=\"-3.14\"\n";
-				urdf += "\t\t\tupper=\"3.14\"\n";
-				urdf += "\t\t\teffort=\"10\"\n";
+				urdf += "\t\t\tlower=\"-6.28\"\n";
+				urdf += "\t\t\tupper=\"6.28\"\n";
+				urdf += "\t\t\teffort=\"100\"\n";
 				urdf += "\t\t\tvelocity=\"100\"/>\n";
 				urdf += "\t</joint>\n\n";
 			}
