@@ -11,7 +11,7 @@
 // base body constraint
 // When base body constraints are needed, just active define function
 // #define BASEBODY_FIX
-#define BASEBODY_TRANS_Z
+// #define BASEBODY_TRANS_Z
 
 // analysis method
 #define METHOD_CONVENTIONAL		0
@@ -52,7 +52,7 @@ extern Eigen::VectorXd dY;
 extern double t_current;
 
 // leg contact point
-extern std::vector<double> rjf;
+extern std::vector<double> rjf, road_h;
 
 // boolean vector
 typedef Eigen::Array<bool, Eigen::Dynamic, 1> ArrayXb;

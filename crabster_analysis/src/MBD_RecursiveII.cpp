@@ -833,6 +833,11 @@ void MBD_RecursiveII::massforce_Subsystem(int sub)
 		// contact force/torque vector at center of mass with respect to global reference frame
 		if (flag_contact[sub](curSeq))
 		{
+			if(road_h.size() == 6){
+				pen_z_ref[sub](curSeq) = road_h[sub-1];
+				// std::cout << (int)sub << " pen_z_ref : " << pen_z_ref[sub](curSeq) << std::endl;
+			}
+
 			Fjc_c_sub = m_force->contactForce(rjf[sub][curSeq], drjf[sub][curSeq], pen_z_ref[sub](curSeq), k_contact[sub](curSeq), c_contact[sub](curSeq));
 			Tjc_c_sub = skew(rjf[sub][curSeq] - rjc[sub][curSeq]) * Fjc_c_sub;
 		}

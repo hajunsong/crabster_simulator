@@ -13,64 +13,6 @@ Crabster::Crabster(std::string name, ros::NodeHandle nh) : as(nh, name, boost::b
 	m_outputs = new Outputs();
 
 	as.start();
-
-	// pub_joint_command = nh.advertise<sensor_msgs::JointState>("joint_states", 1);
-
-	// msg_joint.name.push_back("world_to_BaseBody");
-
-	// msg_joint.name.push_back("BaseBody_to_Subsystem11(FR_Yaw_Motor)");
-	// msg_joint.name.push_back("Subsystem11(FR_Yaw_Motor)_to_Subsystem12(FR_Roll_Arm)");
-	// msg_joint.name.push_back("Subsystem12(FR_Roll_Arm)_to_Subsystem13(FR_Pitch_Arm)");
-	// msg_joint.name.push_back("Subsystem13(FR_Pitch_Arm)_to_Subsystem14(FR_Leg)");
-	
-	// msg_joint.name.push_back("BaseBody_to_Subsystem21(MR_Yaw_Motor)");
-	// msg_joint.name.push_back("Subsystem21(MR_Yaw_Motor)_to_Subsystem22(MR_Roll_Arm)");
-	// msg_joint.name.push_back("Subsystem22(MR_Roll_Arm)_to_Subsystem23(MR_Pitch_Arm)");
-	// msg_joint.name.push_back("Subsystem23(MR_Pitch_Arm)_to_Subsystem24(MR_Leg)");
-	
-	// msg_joint.name.push_back("BaseBody_to_Subsystem31(RR_Yaw_Motor)");
-	// msg_joint.name.push_back("Subsystem31(RR_Yaw_Motor)_to_Subsystem32(RR_Roll_Arm)");
-	// msg_joint.name.push_back("Subsystem32(RR_Roll_Arm)_to_Subsystem33(RR_Pitch_Arm)");
-	// msg_joint.name.push_back("Subsystem33(RR_Pitch_Arm)_to_Subsystem34(RR_Leg)");
-	
-	// msg_joint.name.push_back("BaseBody_to_Subsystem41(FL_Yaw_Motor)");
-	// msg_joint.name.push_back("Subsystem41(FL_Yaw_Motor)_to_Subsystem42(FL_Roll_Arm)");
-	// msg_joint.name.push_back("Subsystem42(FL_Roll_Arm)_to_Subsystem43(FL_Pitch_Arm)");
-	// msg_joint.name.push_back("Subsystem43(FL_Pitch_Arm)_to_Subsystem44(FL_Leg)");
-	
-	// msg_joint.name.push_back("BaseBody_to_Subsystem51(ML_Yaw_Motor)");
-	// msg_joint.name.push_back("Subsystem51(ML_Yaw_Motor)_to_Subsystem52(ML_Roll_Arm)");
-	// msg_joint.name.push_back("Subsystem52(ML_Roll_Arm)_to_Subsystem53(ML_Pitch_Arm)");
-	// msg_joint.name.push_back("Subsystem53(ML_Pitch_Arm)_to_Subsystem54(ML_Leg)");
-	
-	// msg_joint.name.push_back("BaseBody_to_Subsystem61(RL_Yaw_Motor)");
-	// msg_joint.name.push_back("Subsystem61(RL_Yaw_Motor)_to_Subsystem62(RL_Roll_Arm)");
-	// msg_joint.name.push_back("Subsystem62(RL_Roll_Arm)_to_Subsystem63(RL_Pitch_Arm)");
-	// msg_joint.name.push_back("Subsystem63(RL_Pitch_Arm)_to_Subsystem64(RL_Leg)");
-
-	// ros::Rate loop_rate(10);
-
-	// unsigned int n = msg_joint.name.size();
-	// msg_joint.position.resize(n);
-	// msg_joint.velocity.resize(n);
-	// msg_joint.effort.resize(n);
-
-	// for (unsigned int i = 0; i < n; i++)
-	// {
-	// 	msg_joint.velocity[i] = 0;
-	// 	msg_joint.effort[i] = 0;
-	// 	msg_joint.position[i] = 0;
-	// }
-
-	// while(ros::ok())
-	// {
-	// 	loop_rate.sleep();
-	// 	ros::spinOnce();
-
-	// 	msg_joint.header.stamp = ros::Time::now();
-
-	// 	pub_joint_command.publish(msg_joint);
-	// }
 }
 
 Crabster::~Crabster()
@@ -163,16 +105,12 @@ void Crabster::executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &go
 
 		dY = m_dynamics->dynamics_analysis(t_current, Y);
 
+		rjf.clear();
 		for(unsigned int i = 1; i <= 6; i++){
 			for(unsigned int j = 0; j < 3; j++){
-					// ROS_INFO("%d, %d", i, j);
-					rjf.push_back(m_dynamics->rjf[i][3](j));
+				// ROS_INFO("%d, %d", i, j);
+				rjf.push_back(m_dynamics->rjf[i][3](j));
 			}
-		}
-
-		msg_joint.position[0] = Y(2) - 0.5;
-		for(unsigned int i = 1; i <= 24; i++){
-			msg_joint.position[i] = Y(i + 6);
 		}
 
 		// store output data

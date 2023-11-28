@@ -1,5 +1,7 @@
 <launch>
-    <arg name="standalone" default="false"/>
-    <param name="standalone" type="boolean" value="$(arg standalone)" />
+    <!-- <arg name="standalone" default="false"/> -->
+    <!-- <param name="standalone" type="boolean" value="$(arg standalone)" /> -->
+
     <node pkg="crabster_analysis" type="crabster_analysis_node" name="crabster_analysis_node" output="screen" />
+    <node pkg="cpos_maphandler_dynamics" type="contact_terrain_crabster_node" name="contact_terrain_crabster_node" />
 </launch>

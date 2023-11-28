@@ -12,8 +12,12 @@
 
 #include <sensor_msgs/JointState.h>
 
+#include <std_msgs/Float64MultiArray.h>
+
 #include <stdlib.h>
 #include <pthread.h>
+
+extern sensor_msgs::JointState msg_joint;
 
 const double eps = 1e-7;
 
@@ -50,7 +54,4 @@ private:
 
     double t_end, integrationStep, dataSaveStep;
     int solver, dataSave_count;;
-
-    ros::Publisher pub_joint_command;
-	sensor_msgs::JointState msg_joint;
 };
