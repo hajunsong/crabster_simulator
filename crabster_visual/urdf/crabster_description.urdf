@@ -2,7 +2,7 @@
 <robot
 	xmlns:xacro="http://wiki.ros.org/xacro" name="crabster">
 
-	<!-- <link name="world"></link> -->
+	<link name="world"></link>
 	<link name="BaseBody">
 		<inertial>
 			<origin
@@ -34,7 +34,7 @@
 			</geometry>
 		</collision>
 	</link>
-	<!-- <joint name="world_to_BaseBody" type="prismatic">
+	<joint name="world_to_BaseBody" type="prismatic">
 		<origin
 			xyz="0.000000 0.000000 0.500000"
 			rpy="0.000000 -0.000000 0.000000"/>
@@ -42,7 +42,7 @@
 		<child link="BaseBody"/>
 		<axis xyz="0.0 0.0 1.0"/>
 		<limit effort="10" lower="-5.0" upper="5.0" velocity="100"/>
-	</joint> -->
+	</joint>
 	<link name="Subsystem11(FR_Yaw_Motor)">
 		<inertial>
 			<origin

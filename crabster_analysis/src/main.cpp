@@ -31,6 +31,10 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "crabster_analysis_node");
 	ros::NodeHandle nh;
 
+    bool standalone;
+    nh.getParam("standalone", standalone);
+    ROS_INFO("standalone : %d", (int)standalone);
+
     Crabster crabster("crabster_analysis_server", nh);
 
     crabster_msgs::CrabsterPose msg;
@@ -38,20 +42,22 @@ int main(int argc, char** argv)
 
     ros::Rate loop_rate(100);
 
-    // crabster.run_single_init();
-    // rjf.clear();
+    if(standalone)
+        crabster.run_single_init();
+    rjf.clear();
 
     while(ros::ok())
     {
-        // crabster.run_single();
+        if(standalone)
+            crabster.run_single();
 
         for(uint i = 0; i < Y.size(); i++){
             msg.pose.push_back(Y(i));
         }
 
-        // for(uint i = 0; i < 18; i++){
-        //     msg.pose.push_back(rjf[i]);
-        // }
+        for(uint i = 0; i < 18; i++){
+            msg.pose.push_back(rjf[i]);
+        }
 
         pubCrabsterPose.publish(msg);
 
