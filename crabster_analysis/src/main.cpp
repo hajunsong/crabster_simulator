@@ -33,7 +33,7 @@ void funcSub_foot_contact_z(const std_msgs::Float64MultiArray::ConstPtr &input)
         // std::cout<< input->data[0] <<" / " << input->data[1] <<" / " << input->data[2] <<" / " << input->data[3] <<" / " << input->data[4] <<" / " << input->data[5] <<" / " << std::endl;
         road_h.clear();
         for(uint i = 0; i < 6; i++){
-            road_h.push_back(input->data[i]*0);
+            road_h.push_back(input->data[i]);
             // std::cout << road_h[i] << " / ";
         }
         // std::cout << std::endl;
@@ -64,7 +64,7 @@ int main(int argc, char** argv)
     //     crabster.run_single_init();
     rjf.clear();
     road_h.clear();
-    road_h.assign(6, 0);
+    road_h.assign(6, -10);
 
 	ros::Publisher pub_joint_command = nh.advertise<sensor_msgs::JointState>("joint_states", 1);
 
@@ -123,9 +123,26 @@ int main(int argc, char** argv)
         pubCrabsterPose.publish(msg);
         msg.pose.clear();
 
-		msg_joint.position[0] = Y(2);
-		for(unsigned int i = 1; i <= 24; i++){
-			msg_joint.position[i] = Y(i + 6);
+		if(Y.size() > 0){
+			msg_joint.position[0] = Y(2) + 0.5;
+			for(unsigned int i = 1; i <= 4; i++){
+				msg_joint.position[i] = Y(i + 12);
+			}
+			for(unsigned int i = 5; i <= 8; i++){
+				msg_joint.position[i] = Y(i + 12 + 4);
+			}
+			for(unsigned int i = 9; i <= 12; i++){
+				msg_joint.position[i] = Y(i + 12 + 8);
+			}
+			for(unsigned int i = 13; i <= 16; i++){
+				msg_joint.position[i] = Y(i + 12 + 12);
+			}
+			for(unsigned int i = 17; i <= 20; i++){
+				msg_joint.position[i] = Y(i + 12 + 16);
+			}
+			for(unsigned int i = 21; i <= 24; i++){
+				msg_joint.position[i] = Y(i + 12 + 20);
+			}
 		}
 
 		msg_joint.header.stamp = ros::Time::now();

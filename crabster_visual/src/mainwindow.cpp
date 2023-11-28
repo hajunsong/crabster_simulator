@@ -124,15 +124,6 @@ void MainWindow::btnLoadClicked()
 
 			urdf += "\t<link name=\"world\"></link>\n";
 
-			urdf += "\t<link name=\"road\"></link>\n";
-			urdf += "\t<joint name=\"world_to_road\" type=\"fixed\">\n";
-			urdf += "\t\t<origin\n";
-			urdf += "\t\t\txyz=\"0 0 -1\"\n";
-			urdf += "\t\t\trpy=\"0 0 0\"/>\n";
-			urdf += "\t\t<parent link=\"world\"/>\n";
-			urdf += "\t\t<child link=\"road\"/>\n";
-			urdf += "\t</joint>\n";
-
 			urdf += "\t<link name=\"" + dataBase["name"].asString() + "\">\n";
 
 			urdf += "\t\t<inertial>\n";

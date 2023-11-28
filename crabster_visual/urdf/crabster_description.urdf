@@ -3,14 +3,6 @@
 	xmlns:xacro="http://wiki.ros.org/xacro" name="crabster">
 
 	<link name="world"></link>
-	<link name="road"></link>
-	<joint name="world_to_road" type="fixed">
-		<origin
-			xyz="0 0 -1"
-			rpy="0 0 0"/>
-		<parent link="world"/>
-		<child link="road"/>
-	</joint>
 	<link name="BaseBody">
 		<inertial>
 			<origin
@@ -44,7 +36,7 @@
 	</link>
 	<joint name="world_to_BaseBody" type="prismatic">
 		<origin
-			xyz="0.000000 0.000000 0.000000"
+			xyz="0.000000 0.000000 -0.500000"
 			rpy="0.000000 -0.000000 0.000000"/>
 		<parent link="world"/>
 		<child link="BaseBody"/>

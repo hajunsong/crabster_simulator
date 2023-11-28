@@ -19,6 +19,8 @@ void Rviz::initRvizRobotModel(void *_layout)
 	m_RvizManager->initialize();
 	m_RvizManager->startUpdate();
 
+
+
 	setTopicRobot();
 }
 
@@ -26,9 +28,15 @@ void Rviz::setTopicRobot()
 {
 	m_RvizManager->setFixedFrame("world");
 
-	m_RvizGrid = m_RvizManager->createDisplay("rviz/Grid", "adjustable grid", true);
-	m_RvizGrid->subProp("Line Style")->setValue("Billboards");
+	// m_RvizGrid = m_RvizManager->createDisplay("rviz/Grid", "adjustable grid", true);
+	// m_RvizGrid->subProp("Line Style")->setValue("Billboards");
 
 	m_RvizRobotModel = m_RvizManager->createDisplay("rviz/RobotModel", "robotmodel", true);
   	m_RvizRobotModel->subProp("Robot Description")->setValue("robot_description");
+
+	m_RvizPointCloud = m_RvizManager->createDisplay("rviz/PointCloud2", "terrain", true);
+  	m_RvizPointCloud->subProp("Topic")->setValue("jeju_terrain/cloud");
+  	m_RvizPointCloud->subProp("Size (m)")->setValue("0.05");
+	m_RvizPointCloud->subProp("Color Transformer")->setValue("AxisColor");
+	m_RvizPointCloud->subProp("Axis")->setValue("Z");
 }

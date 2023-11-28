@@ -85,6 +85,9 @@ void Crabster::executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &go
 	ros::Rate loop_rate(10);
 	bool success = true;
 
+	std::cout << "\nSimulation start!\n" << std::endl;
+	std::chrono::high_resolution_clock::time_point t_start = std::chrono::high_resolution_clock::now();
+
 	while(ros::ok())
 	{
 		loop_rate.sleep();
@@ -141,12 +144,22 @@ void Crabster::executeCB(const crabster_msgs::CrabsterSimulationGoalConstPtr &go
 
 		as.publishFeedback(feedback);
 	}
+	
+	std::chrono::high_resolution_clock::time_point t_stop = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> t_span = std::chrono::duration_cast<std::chrono::milliseconds>(t_stop - t_start);
+
+	std::cout << "Simulation time = " << std::to_string(t_end) << " [sec]" << std::endl;
+	std::cout << "Computation time = " << t_span.count() << " [msec]" << std::endl;
+
+	// m_outputs->csvWrite();
 
 	if (success)
     {
 		result.complete = true;
         ROS_INFO("%s: Succeeded", action_name.c_str());
         // set the action state to succeeded
+
+
     }
 	as.setSucceeded(result);
 }

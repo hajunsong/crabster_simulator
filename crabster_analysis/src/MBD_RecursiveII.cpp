@@ -835,9 +835,10 @@ void MBD_RecursiveII::massforce_Subsystem(int sub)
 		{
 			if(road_h.size() == 6){
 				pen_z_ref[sub](curSeq) = road_h[sub-1];
-				// std::cout << (int)sub << " pen_z_ref : " << pen_z_ref[sub](curSeq) << std::endl;
 			}
 
+			// std::cout << (int)sub << " pen_z_ref : " << pen_z_ref[sub](curSeq);
+			// if(sub == 6) std::cout << std::endl;
 			Fjc_c_sub = m_force->contactForce(rjf[sub][curSeq], drjf[sub][curSeq], pen_z_ref[sub](curSeq), k_contact[sub](curSeq), c_contact[sub](curSeq));
 			Tjc_c_sub = skew(rjf[sub][curSeq] - rjc[sub][curSeq]) * Fjc_c_sub;
 		}

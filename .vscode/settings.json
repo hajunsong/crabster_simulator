@@ -75,6 +75,9 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "any": "cpp",
+        "codecvt": "cpp",
+        "regex": "cpp"
     }
 }
