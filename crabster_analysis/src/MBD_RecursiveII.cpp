@@ -936,7 +936,7 @@ void MBD_RecursiveII::massforce_Subsystem(int sub)
 
 	for (int j = 1; j < loopList[sub].cols() - 1; j++)
 	{
-		for (int k = j + 1; k < loopList[sub].cols() - 1; k++)
+		for (int k = j + 1; k < loopList[sub].cols(); k++)
 		{
 			for (int i = 0; i < loopList[sub].rows(); i++)
 			{
@@ -1151,7 +1151,7 @@ void MBD_RecursiveII::jointReactionForce(int sub)
 	std::vector<Eigen::VectorXd> KjBjddqj_sum(nSubBody[sub], Eigen::VectorXd::Zero(6));
 	for (int j = 1; j < loopList[sub].cols() - 1; j++)
 	{
-		for (int k = j + 1; k < loopList[sub].cols() - 1; k++)
+		for (int k = j + 1; k < loopList[sub].cols(); k++)
 		{
 			for (int i = 0; i < loopList[sub].rows(); i++)
 			{
